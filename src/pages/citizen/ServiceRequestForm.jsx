@@ -5,6 +5,7 @@ import CitizenLayout from "../../components/citizen/Layout";
 import api from "../../services/api";
 import "./ServiceRequestForm.css";
  
+// Matches exactly: com.cts.enums.AssetType
 const ASSET_GROUPS = [
   {
     group: "💡 Lighting",
@@ -12,11 +13,11 @@ const ASSET_GROUPS = [
   },
   {
     group: "🛣️ Roads & Transport",
-    types: ["ROAD", "BRIDGE", "FOOTPATH", "SPEED_BREAKER", "DIVIDER", "BUS_STOP", "BUS_SHELTER", "PARKING_LOTS"],
+    types: ["ROAD", "BRIDGE", "FOOTPATH", "SPEED_BREAKER", "BUS_STOP", "PARKING_LOTS"],
   },
   {
     group: "🚰 Water & Sanitation",
-    types: ["WATER_TAP", "WATER_PIPELINE", "WATER_TANK", "SEWAGE", "DRAINAGE", "MANHOLE", "STORM_DRAIN", "PUBLIC_TOILET", "TOILETS"],
+    types: ["WATER_TAP", "WATER_PIPELINE", "WATER_TANK", "SEWAGE", "DRAINAGE", "MANHOLE", "STORM_DRAIN", "PUBLIC_TOILET"],
   },
   {
     group: "⚡ Electrical",
@@ -24,7 +25,7 @@ const ASSET_GROUPS = [
   },
   {
     group: "🌳 Public Spaces",
-    types: ["PARK", "PLAYGROUND", "GARDEN", "COMMUNITY_HALL", "MARKET", "LIBRARY"],
+    types: ["PARK", "PLAYGROUND", "GARDEN", "MARKET", "LIBRARY"],
   },
   {
     group: "🗑️ Waste Management",
@@ -32,15 +33,11 @@ const ASSET_GROUPS = [
   },
   {
     group: "🏗️ Buildings & Infrastructure",
-    types: ["MUNICIPAL_OFFICE", "FIRE_STATION", "POLICE_BOOTH", "HEALTH_CENTER", "SCHOOL_BUILDING"],
-  },
-  {
-    group: "🚛 Vehicles & Equipment",
-    types: ["VEHICLE", "GARBAGE_TRUCK", "WATER_TANKER", "EXCAVATOR", "GENERATOR_UNIT"],
+    types: ["HEALTH_CENTER", "SCHOOL_BUILDING"],
   },
   {
     group: "🚧 Signage & Safety",
-    types: ["ROAD_SIGN", "BOUNDARY_WALL", "CCTV_CAMERA", "SAFETY_BARRIER"],
+    types: ["ROAD_SIGN", "BOUNDARY_WALL", "CCTV_CAMERA"],
   },
 ];
  

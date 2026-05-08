@@ -1,15 +1,25 @@
 // App.js
-import { Routes, Route } from "react-router-dom";
-import CitizenLogin from "./pages/citizen/CitizenLogin";
-import StaffLogin   from "./pages/staff/StaffLogin";
-import CitizenHome  from "./pages/citizen/CitizenHome";
-import StaffHome    from "./pages/staff/StaffHome";
-import ProtectedRoute from "./components/ProtectedRoute";
+import { Routes, Route, Navigate } from "react-router-dom";
+
+// ── Auth & Citizen ─────────────────────────────────────────
+import CitizenLogin       from "./pages/citizen/CitizenLogin";
+import StaffLogin         from "./pages/staff/StaffLogin";
+import CitizenHome        from "./pages/citizen/CitizenHome";
+import StaffHome          from "./pages/staff/StaffHome";
+import ProtectedRoute     from "./components/ProtectedRoute";
 import ServiceRequestForm from "./pages/citizen/ServiceRequestForm";
 
-// whyyy
-//git checkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk
-// Staff roles
+// ── Asset Module ───────────────────────────────────────────
+import { AssetProvider }   from "./context/AssetContext";
+import AssetLanding        from "./pages/staff/asset/AssetLanding";
+import AssetPage           from "./pages/staff/asset/AssetPage";
+import AssetListPage       from "./pages/staff/asset/AssetListPage";
+import InspectionPage      from "./pages/staff/asset/InspectionPage";
+import InspectionListPage  from "./pages/staff/asset/InspectionListPage";
+import MaintenancePage     from "./pages/staff/asset/MaintenancePage";
+import MaintenanceListPage from "./pages/staff/asset/MaintenanceListPage";
+
+// ── Staff roles ────────────────────────────────────────────
 const STAFF_ROLES = [
   "DISPATCHER",
   "CREW",
@@ -22,48 +32,69 @@ const STAFF_ROLES = [
 
 function App() {
   return (
-    <Routes>
+    <AssetProvider>
+      <Routes>
 
-      <Route path="/"      element={<CitizenLogin />} />
-      <Route path="/staff" element={<StaffLogin />} />
+        {/* ── Public ── */}
+        <Route path="/"      element={<CitizenLogin />} />
+        <Route path="/staff" element={<StaffLogin />} />
 
-      <Route
-        path="/citizen/home"
-        element={
-          <ProtectedRoute allowedRoles={["USER"]} loginPath="/">
-            <CitizenHome />
-            
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path="/citizen/request/new"
-        element={
-          <ProtectedRoute allowedRoles={["USER"]} loginPath="/">
-            <ServiceRequestForm />
-            
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path="/staff/home"
-        element={
-          <ProtectedRoute allowedRoles={STAFF_ROLES} loginPath="/staff">
-            <StaffHome />
-          </ProtectedRoute>
-        }
-      />
+        {/* ── Citizen ── */}
+        <Route
+          path="/citizen/home"
+          element={
+            <ProtectedRoute allowedRoles={["USER"]} loginPath="/">
+              <CitizenHome />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/citizen/request/new"
+          element={
+            <ProtectedRoute allowedRoles={["USER"]} loginPath="/">
+              <ServiceRequestForm />
+            </ProtectedRoute>
+          }
+        />
 
-      {/* Add more protected routes below as you build pages */}
-      {/* 
-      <Route path="/staff/requests" element={
-        <ProtectedRoute allowedRoles={["DISPATCHER","OPERATIONS_MANAGER","ADMINISTRATOR"]} loginPath="/staff">
-          <ServiceRequestsPage />
-        </ProtectedRoute>
-      } />
-      */}
+        {/* ── Staff Home ── */}
+        <Route
+          path="/staff/home"
+          element={
+            <ProtectedRoute allowedRoles={STAFF_ROLES} loginPath="/staff">
+              <StaffHome />
+            </ProtectedRoute>
+          }
+        />
 
-    </Routes>
+        {/* ── Asset Module ── */}
+        <Route path="/staff/assets"                   element={<AssetLanding />} />
+        <Route path="/staff/assets/registry"          element={<AssetPage />} />
+        <Route path="/staff/assets/registry/list"     element={<AssetListPage />} />
+        <Route path="/staff/assets/inspections"       element={<InspectionPage />} />
+        <Route path="/staff/assets/inspections/list"  element={<InspectionListPage />} />
+        <Route path="/staff/assets/maintenance"       element={<MaintenancePage />} />
+        <Route path="/staff/assets/maintenance/list"  element={<MaintenanceListPage />} />
+
+        {/* ── Legacy routes (StaffHome QuickActions) ── */}
+        <Route path="/staff/inspections" element={<InspectionPage />} />
+        <Route path="/staff/maintenance" element={<MaintenancePage />} />
+
+        {/* ── Other staff routes (uncomment as you build) ── */}
+        {/* <Route path="/staff/requests"   element={<RequestsPage />} /> */}
+        {/* <Route path="/staff/workorders" element={<WorkOrdersPage />} /> */}
+        {/* <Route path="/staff/crews"      element={<CrewsPage />} /> */}
+        {/* <Route path="/staff/kpis"       element={<KPIsPage />} /> */}
+        {/* <Route path="/staff/reports"    element={<ReportsPage />} /> */}
+        {/* <Route path="/staff/audit"      element={<AuditPage />} /> */}
+        {/* <Route path="/staff/users"      element={<UsersPage />} /> */}
+        {/* <Route path="/staff/settings"   element={<SettingsPage />} /> */}
+
+        {/* ── Fallback ── */}
+        <Route path="*" element={<Navigate to="/staff" replace />} />
+
+      </Routes>
+    </AssetProvider>
   );
 }
 
