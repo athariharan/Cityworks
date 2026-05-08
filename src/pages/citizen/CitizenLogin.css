@@ -1,0 +1,210 @@
+/* CitizenLogin.css */
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Lato:wght@300;400;700&display=swap');
+
+.citizen-root {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #e0f7ef 0%, #f0f9ff 50%, #fef9ec 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Lato', sans-serif;
+  padding: 24px;
+}
+
+.citizen-card {
+  background: #ffffff;
+  border-radius: 24px;
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.10);
+  width: 100%;
+  max-width: 460px;
+  overflow: hidden;
+}
+
+.citizen-header {
+  background: linear-gradient(135deg, #16a34a, #15803d);
+  padding: 32px 36px 28px;
+  text-align: center;
+  color: white;
+}
+
+.citizen-header .city-icon {
+  font-size: 2.4rem;
+  margin-bottom: 8px;
+}
+
+.citizen-header h1 {
+  font-family: 'Nunito', sans-serif;
+  font-size: 1.7rem;
+  font-weight: 800;
+  margin: 0 0 4px;
+  letter-spacing: -0.3px;
+}
+
+.citizen-header p {
+  font-size: 0.88rem;
+  opacity: 0.85;
+  margin: 0;
+  font-weight: 300;
+}
+
+.tab-row {
+  display: flex;
+  border-bottom: 2px solid #f0f0f0;
+  background: #fafafa;
+}
+
+.tab-btn {
+  flex: 1;
+  padding: 14px;
+  border: none;
+  background: transparent;
+  font-family: 'Nunito', sans-serif;
+  font-weight: 700;
+  font-size: 0.92rem;
+  color: #9ca3af;
+  cursor: pointer;
+  transition: all 0.2s;
+  border-bottom: 3px solid transparent;
+  margin-bottom: -2px;
+}
+
+.tab-btn.active {
+  color: #16a34a;
+  border-bottom-color: #16a34a;
+  background: white;
+}
+
+.citizen-body {
+  padding: 28px 36px 32px;
+}
+
+.form-label-custom {
+  display: block;
+  font-family: 'Nunito', sans-serif;
+  font-weight: 700;
+  font-size: 0.82rem;
+  color: #374151;
+  margin-bottom: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.form-input-custom {
+  width: 100%;
+  padding: 11px 14px;
+  border: 1.5px solid #e5e7eb;
+  border-radius: 10px;
+  font-family: 'Lato', sans-serif;
+  font-size: 0.95rem;
+  color: #111827;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  box-sizing: border-box;
+  background: #fafafa;
+}
+
+.form-input-custom:focus {
+  border-color: #16a34a;
+  box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.12);
+  background: white;
+}
+
+.gender-row {
+  display: flex;
+  gap: 12px;
+}
+
+.gender-chip {
+  flex: 1;
+  padding: 9px 8px;
+  border: 1.5px solid #e5e7eb;
+  border-radius: 10px;
+  background: #fafafa;
+  text-align: center;
+  font-family: 'Nunito', sans-serif;
+  font-weight: 600;
+  font-size: 0.88rem;
+  color: #6b7280;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  user-select: none;
+}
+
+.gender-chip input {
+  display: none;
+}
+
+.gender-chip.selected {
+  border-color: #16a34a;
+  background: #f0fdf4;
+  color: #16a34a;
+}
+
+.submit-btn {
+  width: 100%;
+  padding: 13px;
+  background: linear-gradient(135deg, #16a34a, #15803d);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-family: 'Nunito', sans-serif;
+  font-weight: 800;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: opacity 0.2s, transform 0.1s;
+  letter-spacing: 0.3px;
+}
+
+.submit-btn:hover:not(:disabled) {
+  opacity: 0.92;
+  transform: translateY(-1px);
+}
+
+.submit-btn:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+.staff-link {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 0.82rem;
+  color: #9ca3af;
+}
+
+.staff-link a {
+  color: #16a34a;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.staff-link a:hover {
+  text-decoration: underline;
+}
+
+.alert-custom {
+  padding: 10px 14px;
+  border-radius: 10px;
+  font-size: 0.87rem;
+  margin-bottom: 18px;
+}
+
+.alert-danger-custom {
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #dc2626;
+}
+
+.alert-success-custom {
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  color: #16a34a;
+}
+
+.field-group {
+  margin-bottom: 18px;
+}

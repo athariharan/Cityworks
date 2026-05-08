@@ -1,0 +1,154 @@
+/* pages/staff/StaffHome.css */
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600&display=swap');
+
+.sh-root {
+  font-family: 'IBM Plex Sans', sans-serif;
+}
+
+/* ── Header ── */
+.sh-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 32px;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.sh-title {
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: #0f172a;
+  margin: 0 0 6px;
+  letter-spacing: -0.4px;
+}
+
+.sh-subtitle {
+  font-size: 0.88rem;
+  color: #64748b;
+  margin: 0;
+  font-weight: 400;
+}
+
+.sh-header-badge {
+  background: #0f172a;
+  color: #3b82f6;
+  border: 1px solid rgba(59,130,246,0.3);
+  padding: 8px 18px;
+  border-radius: 20px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+}
+
+/* ── Stats Grid ── */
+.sh-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 32px;
+}
+
+.sh-stat-card {
+  background: white;
+  border-radius: 14px;
+  padding: 24px 20px;
+  text-align: center;
+  box-shadow: 0 1px 8px rgba(0,0,0,0.06);
+  border: 1.5px solid transparent;
+  transition: transform 0.18s, box-shadow 0.18s;
+}
+
+.sh-stat-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+}
+
+.sh-stat-card--blue   { border-color: #bfdbfe; }
+.sh-stat-card--amber  { border-color: #fde68a; }
+.sh-stat-card--green  { border-color: #bbf7d0; }
+.sh-stat-card--red    { border-color: #fecaca; }
+
+.sh-stat-icon {
+  font-size: 1.6rem;
+  margin-bottom: 10px;
+}
+
+.sh-stat-value {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #0f172a;
+  line-height: 1;
+  margin-bottom: 6px;
+}
+
+.sh-stat-label {
+  font-size: 0.75rem;
+  color: #94a3b8;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  font-weight: 500;
+}
+
+/* ── Section ── */
+.sh-section {
+  background: white;
+  border-radius: 14px;
+  padding: 24px;
+  box-shadow: 0 1px 8px rgba(0,0,0,0.06);
+  margin-bottom: 24px;
+}
+
+.sh-section-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #0f172a;
+  margin: 0 0 18px;
+  letter-spacing: -0.2px;
+}
+
+/* ── Quick Actions ── */
+.sh-quick-actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.sh-quick-action {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 18px;
+  background: #f8fafc;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.18s;
+  font-family: 'IBM Plex Sans', sans-serif;
+}
+
+.sh-quick-action:hover {
+  background: #f0f9ff;
+  border-color: #bfdbfe;
+  transform: translateY(-1px);
+  box-shadow: 0 3px 10px rgba(59,130,246,0.1);
+}
+
+.sh-quick-action-icon { font-size: 1rem; }
+
+.sh-quick-action-label {
+  font-size: 0.88rem;
+  font-weight: 500;
+  color: #374151;
+}
+
+/* ── Responsive ── */
+@media (max-width: 900px) {
+  .sh-stats-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 560px) {
+  .sh-stats-grid { grid-template-columns: 1fr 1fr; }
+  .sh-title { font-size: 1.3rem; }
+}
