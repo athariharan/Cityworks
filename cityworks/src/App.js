@@ -91,7 +91,8 @@ function App() {
         {/* <Route path="/staff/settings"   element={<SettingsPage />} /> */}
 
         {/* ── Fallback ── */}
-        <Route path="*" element={<Navigate to="/staff" replace />} />
+        <Route path="/staff/*" element={<Navigate to="/staff/home" replace />} />
+        <Route path="*"        element={<Navigate to="/"      replace />} />
 
       </Routes>
     </AssetProvider>

@@ -1,7 +1,9 @@
 // pages/staff/StaffHome.jsx
+import { useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import StaffLayout from "../../components/staff/StaffLayout";
+import AddStaffModal from "./admin/AddStaffModal";
 import "./StaffHome.css";
 
 // ── Reusable Stat Card ─────────────────────────────────────
@@ -138,21 +140,56 @@ function FinanceOfficerView({ navigate }) {
 }
 
 function AdministratorView({ navigate }) {
+  const [showAddStaff, setShowAddStaff] = useState(false);
+  const [successMsg,   setSuccessMsg]   = useState("");
+
   return (
     <>
+      {showAddStaff && (
+        <AddStaffModal
+          onClose={() => setShowAddStaff(false)}
+          onSuccess={(msg) => { setSuccessMsg(msg); setTimeout(() => setSuccessMsg(""), 4000); }}
+        />
+      )}
+
       <div className="sh-stats-grid">
         <StatCard icon="👤" label="Total Users"        value="—" color="blue" />
         <StatCard icon="👥" label="Total Staff"        value="—" color="green" />
         <StatCard icon="📋" label="Open Requests"      value="—" color="amber" />
         <StatCard icon="🔧" label="Active Work Orders" value="—" color="red" />
       </div>
+
       <div className="sh-section">
-        <h2 className="sh-section-title">Quick Actions</h2>
+        <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", marginBottom:"12px" }}>
+          <h2 className="sh-section-title" style={{ margin:0 }}>Quick Actions</h2>
+          <button
+            onClick={() => setShowAddStaff(true)}
+            style={{
+              display:"flex", alignItems:"center", gap:"6px",
+              padding:"8px 16px", borderRadius:"8px", border:"none",
+              background:"#1e40af", color:"#fff", fontWeight:600,
+              fontSize:"13px", cursor:"pointer",
+            }}
+          >
+            ＋ Add Staff
+          </button>
+        </div>
+
+        {successMsg && (
+          <div style={{
+            padding:"10px 14px", borderRadius:"8px", marginBottom:"12px",
+            background:"#f0fdf4", color:"#16a34a", border:"1px solid #bbf7d0",
+            fontSize:"13px", fontWeight:500,
+          }}>
+            ✓ {successMsg}
+          </div>
+        )}
+
         <div className="sh-quick-actions">
-          <QuickAction icon="👤" label="Manage Users"    onClick={() => navigate("/staff/users")} />
-          <QuickAction icon="📋" label="Requests"        onClick={() => navigate("/staff/requests")} />
-          <QuickAction icon="🏗️" label="Assets"          onClick={() => navigate("/staff/assets")} />
-          <QuickAction icon="⚙️" label="Settings"        onClick={() => navigate("/staff/settings")} />
+          <QuickAction icon="👤" label="Manage Users"   onClick={() => navigate("/staff/users")} />
+          <QuickAction icon="📋" label="Requests"       onClick={() => navigate("/staff/requests")} />
+          <QuickAction icon="🏗️" label="Asset Registry" onClick={() => navigate("/staff/assets/registry/list")} />
+          <QuickAction icon="⚙️" label="Settings"       onClick={() => navigate("/staff/settings")} />
         </div>
       </div>
     </>
