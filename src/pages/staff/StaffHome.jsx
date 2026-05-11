@@ -1,10 +1,11 @@
 // pages/staff/StaffHome.jsx
+import { useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import StaffLayout from "../../components/staff/StaffLayout";
+import AddStaffModal from "./admin/AddStaffModal";
 import "./StaffHome.css";
 
-// ── Reusable Stat Card ─────────────────────────────────────
 function StatCard({ icon, label, value, color }) {
   return (
     <div className={`sh-stat-card sh-stat-card--${color}`}>
@@ -15,7 +16,6 @@ function StatCard({ icon, label, value, color }) {
   );
 }
 
-// ── Reusable Quick Action Button ───────────────────────────
 function QuickAction({ icon, label, onClick }) {
   return (
     <button className="sh-quick-action" onClick={onClick}>
@@ -24,8 +24,6 @@ function QuickAction({ icon, label, onClick }) {
     </button>
   );
 }
-
-// ── Role Views ─────────────────────────────────────────────
 
 function DispatcherView({ navigate }) {
   return (
@@ -39,10 +37,10 @@ function DispatcherView({ navigate }) {
       <div className="sh-section">
         <h2 className="sh-section-title">Quick Actions</h2>
         <div className="sh-quick-actions">
-          <QuickAction icon="📋" label="View Requests"    onClick={() => navigate("/staff/requests")} />
+          <QuickAction icon="📋" label="View Requests"     onClick={() => navigate("/staff/requests")} />
           <QuickAction icon="🔧" label="Create Work Order" onClick={() => navigate("/staff/workorders")} />
-          <QuickAction icon="👥" label="Manage Crews"     onClick={() => navigate("/staff/crews")} />
-          <QuickAction icon="📰" label="View News"        onClick={() => navigate("/staff/news")} />
+          <QuickAction icon="👥" label="Manage Crews"      onClick={() => navigate("/staff/crews")} />
+          <QuickAction icon="📰" label="View News"         onClick={() => navigate("/staff/news")} />
         </div>
       </div>
     </>
@@ -53,10 +51,10 @@ function CrewView({ navigate }) {
   return (
     <>
       <div className="sh-stats-grid">
-        <StatCard icon="✅" label="My Tasks Today"     value="—" color="blue" />
-        <StatCard icon="🔧" label="In Progress"        value="—" color="amber" />
-        <StatCard icon="📷" label="Pending Evidence"   value="—" color="red" />
-        <StatCard icon="✔️" label="Completed Today"    value="—" color="green" />
+        <StatCard icon="✅" label="My Tasks Today"   value="—" color="blue" />
+        <StatCard icon="🔧" label="In Progress"      value="—" color="amber" />
+        <StatCard icon="📷" label="Pending Evidence" value="—" color="red" />
+        <StatCard icon="✔️" label="Completed Today"  value="—" color="green" />
       </div>
       <div className="sh-section">
         <h2 className="sh-section-title">Quick Actions</h2>
@@ -75,18 +73,18 @@ function AssetManagerView({ navigate }) {
   return (
     <>
       <div className="sh-stats-grid">
-        <StatCard icon="🏗️" label="Total Assets"        value="—" color="blue" />
-        <StatCard icon="🔍" label="Due Inspections"     value="—" color="amber" />
-        <StatCard icon="🛠️" label="Maintenance Tasks"   value="—" color="red" />
-        <StatCard icon="✅" label="Healthy Assets"      value="—" color="green" />
+        <StatCard icon="🏗️" label="Total Assets"      value="—" color="blue" />
+        <StatCard icon="🔍" label="Due Inspections"   value="—" color="amber" />
+        <StatCard icon="🛠️" label="Maintenance Tasks" value="—" color="red" />
+        <StatCard icon="✅" label="Healthy Assets"    value="—" color="green" />
       </div>
       <div className="sh-section">
         <h2 className="sh-section-title">Quick Actions</h2>
         <div className="sh-quick-actions">
-          <QuickAction icon="🏗️" label="View Assets"      onClick={() => navigate("/staff/assets")} />
-          <QuickAction icon="🔍" label="Inspections"      onClick={() => navigate("/staff/inspections")} />
-          <QuickAction icon="🛠️" label="Maintenance"      onClick={() => navigate("/staff/maintenance")} />
-          <QuickAction icon="📰" label="View News"        onClick={() => navigate("/staff/news")} />
+          <QuickAction icon="🏗️" label="View Assets"  onClick={() => navigate("/staff/assets")} />
+          <QuickAction icon="🔍" label="Inspections"  onClick={() => navigate("/staff/inspections")} />
+          <QuickAction icon="🛠️" label="Maintenance"  onClick={() => navigate("/staff/maintenance")} />
+          <QuickAction icon="📰" label="View News"    onClick={() => navigate("/staff/news")} />
         </div>
       </div>
     </>
@@ -127,10 +125,10 @@ function FinanceOfficerView({ navigate }) {
       <div className="sh-section">
         <h2 className="sh-section-title">Quick Actions</h2>
         <div className="sh-quick-actions">
-          <QuickAction icon="💰" label="View Costs"       onClick={() => navigate("/staff/costs")} />
-          <QuickAction icon="🧰" label="Material Usage"   onClick={() => navigate("/staff/materials")} />
-          <QuickAction icon="🧾" label="Invoices"         onClick={() => navigate("/staff/invoices")} />
-          <QuickAction icon="📰" label="View News"        onClick={() => navigate("/staff/news")} />
+          <QuickAction icon="💰" label="View Costs"     onClick={() => navigate("/staff/costs")} />
+          <QuickAction icon="🧰" label="Material Usage" onClick={() => navigate("/staff/materials")} />
+          <QuickAction icon="🧾" label="Invoices"       onClick={() => navigate("/staff/invoices")} />
+          <QuickAction icon="📰" label="View News"      onClick={() => navigate("/staff/news")} />
         </div>
       </div>
     </>
@@ -138,21 +136,59 @@ function FinanceOfficerView({ navigate }) {
 }
 
 function AdministratorView({ navigate }) {
+  const [showAddStaff, setShowAddStaff] = useState(false);
+  const [successMsg,   setSuccessMsg]   = useState("");
+
   return (
     <>
+      {showAddStaff && (
+        <AddStaffModal
+          onClose={() => setShowAddStaff(false)}
+          onSuccess={(msg) => {
+            setSuccessMsg(msg);
+            setTimeout(() => setSuccessMsg(""), 4000);
+          }}
+        />
+      )}
+
       <div className="sh-stats-grid">
         <StatCard icon="👤" label="Total Users"        value="—" color="blue" />
         <StatCard icon="👥" label="Total Staff"        value="—" color="green" />
         <StatCard icon="📋" label="Open Requests"      value="—" color="amber" />
         <StatCard icon="🔧" label="Active Work Orders" value="—" color="red" />
       </div>
+
       <div className="sh-section">
-        <h2 className="sh-section-title">Quick Actions</h2>
+        <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", marginBottom:"12px" }}>
+          <h2 className="sh-section-title" style={{ margin: 0 }}>Quick Actions</h2>
+          <button
+            onClick={() => setShowAddStaff(true)}
+            style={{
+              display:"flex", alignItems:"center", gap:"6px",
+              padding:"8px 16px", borderRadius:"8px", border:"none",
+              background:"#1e40af", color:"#fff", fontWeight:600,
+              fontSize:"13px", cursor:"pointer",
+            }}
+          >
+            ＋ Add Staff
+          </button>
+        </div>
+
+        {successMsg && (
+          <div style={{
+            padding:"10px 14px", borderRadius:"8px", marginBottom:"12px",
+            background:"#f0fdf4", color:"#16a34a", border:"1px solid #bbf7d0",
+            fontSize:"13px", fontWeight:500,
+          }}>
+            ✓ {successMsg}
+          </div>
+        )}
+
         <div className="sh-quick-actions">
-          <QuickAction icon="👤" label="Manage Users"    onClick={() => navigate("/staff/users")} />
-          <QuickAction icon="📋" label="Requests"        onClick={() => navigate("/staff/requests")} />
-          <QuickAction icon="🏗️" label="Assets"          onClick={() => navigate("/staff/assets")} />
-          <QuickAction icon="⚙️" label="Settings"        onClick={() => navigate("/staff/settings")} />
+          <QuickAction icon="👤" label="Manage Users"   onClick={() => navigate("/staff/users")} />
+          <QuickAction icon="📋" label="Requests"       onClick={() => navigate("/staff/requests")} />
+          <QuickAction icon="🏗️" label="Asset Registry" onClick={() => navigate("/staff/assets/registry/list")} />
+          <QuickAction icon="⚙️" label="Settings"       onClick={() => navigate("/staff/settings")} />
         </div>
       </div>
     </>
@@ -163,32 +199,31 @@ function ComplianceOfficerView({ navigate }) {
   return (
     <>
       <div className="sh-stats-grid">
-        <StatCard icon="📜" label="Audit Entries"      value="—" color="blue" />
-        <StatCard icon="🔍" label="Inspections Due"    value="—" color="amber" />
-        <StatCard icon="📑" label="Reports Generated"  value="—" color="green" />
-        <StatCard icon="⚠️" label="Compliance Issues"  value="—" color="red" />
+        <StatCard icon="📜" label="Audit Entries"     value="—" color="blue" />
+        <StatCard icon="🔍" label="Inspections Due"   value="—" color="amber" />
+        <StatCard icon="📑" label="Reports Generated" value="—" color="green" />
+        <StatCard icon="⚠️" label="Compliance Issues" value="—" color="red" />
       </div>
       <div className="sh-section">
         <h2 className="sh-section-title">Quick Actions</h2>
         <div className="sh-quick-actions">
-          <QuickAction icon="📜" label="Audit Logs"    onClick={() => navigate("/staff/audit")} />
-          <QuickAction icon="🔍" label="Inspections"   onClick={() => navigate("/staff/inspections")} />
-          <QuickAction icon="📑" label="Reports"       onClick={() => navigate("/staff/reports")} />
-          <QuickAction icon="📰" label="View News"     onClick={() => navigate("/staff/news")} />
+          <QuickAction icon="📜" label="Audit Logs"  onClick={() => navigate("/staff/audit")} />
+          <QuickAction icon="🔍" label="Inspections" onClick={() => navigate("/staff/inspections")} />
+          <QuickAction icon="📑" label="Reports"     onClick={() => navigate("/staff/reports")} />
+          <QuickAction icon="📰" label="View News"   onClick={() => navigate("/staff/news")} />
         </div>
       </div>
     </>
   );
 }
 
-// ── Main StaffHome ─────────────────────────────────────────
 function StaffHome() {
-  const navigate       = useNavigate();
-  const { user }       = useSelector((state) => state.auth);
-  const role           = user?.role || "";
+  const navigate = useNavigate();
+  const { user } = useSelector((state) => state.auth);
+  const role     = user?.role || "";
 
-  const rawName  = user?.email?.split("@")[0] || "Staff";
-  const name     = rawName.charAt(0).toUpperCase() + rawName.slice(1);
+  const rawName = user?.email?.split("@")[0] || "Staff";
+  const name    = rawName.charAt(0).toUpperCase() + rawName.slice(1);
 
   const roleLabels = {
     DISPATCHER:          "Dispatcher",
@@ -200,7 +235,6 @@ function StaffHome() {
     COMPLIANCE_OFFICER:  "Compliance Officer",
   };
 
-  // ── Render role-specific dashboard ──
   const renderDashboard = () => {
     switch (role) {
       case "DISPATCHER":         return <DispatcherView        navigate={navigate} />;
@@ -218,8 +252,6 @@ function StaffHome() {
   return (
     <StaffLayout>
       <div className="sh-root">
-
-        {/* Page header */}
         <div className="sh-header">
           <div>
             <h1 className="sh-title">Welcome back, {name} 👋</h1>
@@ -231,10 +263,7 @@ function StaffHome() {
           </div>
           <div className="sh-header-badge">{roleLabels[role]}</div>
         </div>
-
-        {/* Role-based content */}
         {renderDashboard()}
-
       </div>
     </StaffLayout>
   );

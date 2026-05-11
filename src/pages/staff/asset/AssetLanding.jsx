@@ -149,47 +149,7 @@ export default function AssetLanding() {
           </div>
         </div>
 
-        {/* Summary Bar */}
-        <div className="al-summary-bar">
-          <div className="al-summary-item">
-            <span className="al-summary-dot" style={{ background: "#3b82f6" }} />
-            <span className="al-summary-label">System Status:</span>
-            <span className="al-summary-value" style={{ color: "#1e40af" }}>Operational</span>
-          </div>
-          <div className="al-summary-divider" />
-          <div className="al-summary-item">
-            <svg width="13" height="13" fill="none" stroke="#64748b" strokeWidth="2" viewBox="0 0 24 24">
-              <circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/>
-            </svg>
-            <span className="al-summary-label">Last updated:</span>
-            <span className="al-summary-value">
-              {new Date().toLocaleDateString("en-IN", { day:"numeric", month:"short", year:"numeric" })}
-            </span>
-          </div>
-          <div className="al-summary-divider" />
-          <div className="al-summary-item">
-            <svg width="13" height="13" fill="none" stroke="#64748b" strokeWidth="2" viewBox="0 0 24 24">
-              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
-              <circle cx="12" cy="7" r="4"/>
-            </svg>
-            <span className="al-summary-label">Role:</span>
-            <span className="al-summary-value">Asset Manager</span>
-          </div>
-          {overdue > 0 && (
-            <>
-              <div className="al-summary-divider" />
-              <div className="al-summary-item al-summary-warn"
-                onClick={() => navigate("/staff/assets/maintenance/list?filter=Overdue")}>
-                <svg width="13" height="13" fill="none" stroke="#dc2626" strokeWidth="2" viewBox="0 0 24 24">
-                  <circle cx="12" cy="12" r="10"/><path d="M12 8v4m0 4h.01"/>
-                </svg>
-                <span style={{ color:"#dc2626", fontWeight:600 }}>
-                  {overdue} Overdue Task{overdue > 1 ? "s" : ""}
-                </span>
-              </div>
-            </>
-          )}
-        </div>
+        
 
         {/* Module Cards */}
         <div className="al-cards-grid">
