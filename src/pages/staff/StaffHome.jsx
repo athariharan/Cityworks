@@ -1,9 +1,10 @@
 // pages/staff/StaffHome.jsx
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import StaffLayout from "../../components/staff/StaffLayout";
 import AddStaffModal from "./admin/AddStaffModal";
+import AdminService from "../../services/AdminService";
 import "./StaffHome.css";
 
 function StatCard({ icon, label, value, color }) {
@@ -138,6 +139,25 @@ function FinanceOfficerView({ navigate }) {
 function AdministratorView({ navigate }) {
   const [showAddStaff, setShowAddStaff] = useState(false);
   const [successMsg,   setSuccessMsg]   = useState("");
+  const [stats, setStats] = useState({
+    totalUsers: "…", totalStaff: "…", activeWorkOrders: "…",
+  });
+
+  useEffect(() => {
+    Promise.allSettled([
+      AdminService.getAllUsers(),
+      AdminService.getAllStaff(),
+      AdminService.getAllWorkOrders(),
+    ]).then(([users, staff, workOrders]) => {
+      const totalUsers       = users.status       === "fulfilled" ? (users.value.data?.data?.length       ?? "—") : "—";
+      const totalStaff       = staff.status       === "fulfilled" ? (staff.value.data?.data?.length       ?? "—") : "—";
+      const allWO            = workOrders.status  === "fulfilled" ? (workOrders.value.data?.data          ?? [])  : [];
+      const activeWorkOrders = allWO.filter(wo =>
+        wo.status === "NOT_STARTED" || wo.status === "IN_PROGRESS"
+      ).length;
+      setStats({ totalUsers, totalStaff, activeWorkOrders });
+    });
+  }, []);
 
   return (
     <>
@@ -152,10 +172,9 @@ function AdministratorView({ navigate }) {
       )}
 
       <div className="sh-stats-grid">
-        <StatCard icon="👤" label="Total Users"        value="—" color="blue" />
-        <StatCard icon="👥" label="Total Staff"        value="—" color="green" />
-        <StatCard icon="📋" label="Open Requests"      value="—" color="amber" />
-        <StatCard icon="🔧" label="Active Work Orders" value="—" color="red" />
+        <StatCard icon="👤" label="Total Users"        value={stats.totalUsers}       color="blue" />
+        <StatCard icon="👥" label="Total Staff"        value={stats.totalStaff}       color="green" />
+        <StatCard icon="🔧" label="Active Work Orders" value={stats.activeWorkOrders} color="red" />
       </div>
 
       <div className="sh-section">
