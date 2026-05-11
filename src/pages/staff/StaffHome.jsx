@@ -207,7 +207,7 @@ function AdministratorView({ navigate }) {
           <QuickAction icon="👤" label="Manage Users"   onClick={() => navigate("/staff/users")} />
           <QuickAction icon="📋" label="Requests"       onClick={() => navigate("/staff/requests")} />
           <QuickAction icon="🏗️" label="Asset Registry" onClick={() => navigate("/staff/assets/registry/list")} />
-          <QuickAction icon="⚙️" label="Settings"       onClick={() => navigate("/staff/settings")} />
+          <QuickAction icon="🔧" label="Work Orders"    onClick={() => navigate("/staff/workorders")} />
         </div>
       </div>
     </>
