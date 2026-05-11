@@ -43,9 +43,9 @@ export const loginStaff = createAsyncThunk(
 
 // ── Helper — load user from localStorage on refresh ───────
 const loadUserFromStorage = () => {
-  const token  = localStorage.getItem("token");
-  const role   = localStorage.getItem("role");
-  const email  = localStorage.getItem("email");
+  const token = localStorage.getItem("token");
+  const role  = localStorage.getItem("role");
+  const email = localStorage.getItem("email");
   if (token && role && email) return { email, role };
   return null;
 };
@@ -106,17 +106,19 @@ const authSlice = createSlice({
       .addCase(loginStaff.pending,   (state)         => { state.loading = true;  state.error = null; })
       .addCase(loginStaff.fulfilled, (state, action) => {
         state.loading = false;
-        const { token, email, role, userId: id } = action.payload.data;
+        const { token, email, role, userId, staffId } = action.payload.data;
+        const id = staffId ?? userId ?? null;
         state.token  = token;
         state.role   = role;
-        state.userId = id ?? null;
+        state.userId = id;
         state.user   = { email, role };
         localStorage.setItem("token", token);
         localStorage.setItem("role",  role);
         localStorage.setItem("email", email);
-        if (id != null) localStorage.setItem("userId", id);
+        if (id != null) localStorage.setItem("userId", String(id));
       })
       .addCase(loginStaff.rejected,  (state, action) => { state.loading = false; state.error = action.payload; });
+
   },
 });
 
