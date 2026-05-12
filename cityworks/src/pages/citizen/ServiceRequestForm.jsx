@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import CitizenLayout from "../../components/citizen/Layout";
 import api from "../../services/api";
-import "./ServiceRequestForm.css";
+import "../../styles/ServiceRequestForm.css";
  
 // Matches exactly: com.cts.enums.AssetType
 const ASSET_GROUPS = [

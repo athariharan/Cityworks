@@ -2,7 +2,7 @@
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { logout } from "../../redux/slices/authSlice";
-import "./StaffNavbar.css";
+import "../../styles/StaffNavbar.css";
 
 function StaffNavbar({ onMenuToggle }) {
   const dispatch = useDispatch();

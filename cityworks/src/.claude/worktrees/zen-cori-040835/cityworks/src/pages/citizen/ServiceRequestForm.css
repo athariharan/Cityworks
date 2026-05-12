@@ -1,0 +1,293 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Lato:wght@300;400;700&display=swap');
+
+/* ── Wrapper ── */
+.srf-wrapper {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 24px 60px;
+  font-family: 'Lato', sans-serif;
+}
+
+.srf-container {
+  max-width: 680px;
+}
+
+/* ── Header ── */
+.srf-header {
+  margin-bottom: 32px;
+}
+
+.srf-back {
+  background: none;
+  border: none;
+  font-family: 'Lato', sans-serif;
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: #16a34a;
+  cursor: pointer;
+  padding: 0;
+  margin-bottom: 16px;
+  display: inline-block;
+  transition: color 0.15s;
+}
+
+.srf-back:hover { color: #15803d; }
+
+.srf-title {
+  font-family: 'Nunito', sans-serif;
+  font-size: 1.75rem;
+  font-weight: 900;
+  color: #111827;
+  margin: 0 0 6px;
+  letter-spacing: -0.4px;
+}
+
+.srf-subtitle {
+  font-size: 0.95rem;
+  color: #6b7280;
+  margin: 0;
+}
+
+/* ── Form Card ── */
+.srf-form {
+  background: #ffffff;
+  border: 1.5px solid #e5ede9;
+  border-radius: 18px;
+  padding: 32px;
+  box-shadow: 0 2px 16px rgba(22, 163, 74, 0.06);
+}
+
+.srf-field {
+  margin-bottom: 24px;
+}
+
+.srf-label {
+  display: block;
+  font-family: 'Nunito', sans-serif;
+  font-size: 0.88rem;
+  font-weight: 800;
+  color: #374151;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+
+.srf-req  { color: #ef4444; margin-left: 2px; }
+.srf-opt  { color: #9ca3af; font-weight: 600; font-size: 0.8rem; text-transform: none; letter-spacing: 0; }
+
+/* ── Inputs ── */
+.srf-select,
+.srf-textarea {
+  width: 100%;
+  padding: 12px 16px;
+  border: 1.5px solid #d1fae5;
+  border-radius: 10px;
+  font-family: 'Lato', sans-serif;
+  font-size: 0.95rem;
+  color: #111827;
+  background: #fafff9;
+  outline: none;
+  transition: border-color 0.18s, box-shadow 0.18s;
+  box-sizing: border-box;
+}
+
+.srf-select:focus,
+.srf-textarea:focus {
+  border-color: #16a34a;
+  box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.12);
+  background: #ffffff;
+}
+
+.srf-textarea {
+  resize: vertical;
+  min-height: 120px;
+}
+
+.srf-char {
+  text-align: right;
+  font-size: 0.78rem;
+  color: #9ca3af;
+  margin-top: 6px;
+}
+
+/* ── Photo Upload ── */
+.srf-upload-area {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 28px 20px;
+  border: 2px dashed #bbf7d0;
+  border-radius: 12px;
+  background: #f0fdf4;
+  cursor: pointer;
+  transition: border-color 0.18s, background 0.18s;
+}
+
+.srf-upload-area:hover {
+  border-color: #16a34a;
+  background: #dcfce7;
+}
+
+.srf-upload-icon { font-size: 2rem; }
+
+.srf-upload-text {
+  font-family: 'Nunito', sans-serif;
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: #15803d;
+}
+
+.srf-upload-hint {
+  font-size: 0.78rem;
+  color: #9ca3af;
+}
+
+.srf-hidden { display: none; }
+
+.srf-preview-wrap {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+}
+
+.srf-preview-img {
+  width: 100%;
+  max-height: 240px;
+  object-fit: cover;
+  border-radius: 12px;
+  border: 1.5px solid #bbf7d0;
+}
+
+.srf-remove-photo {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: rgba(17,24,39,0.65);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 4px 10px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.srf-remove-photo:hover { background: rgba(17,24,39,0.85); }
+
+/* ── Error ── */
+.srf-error {
+  background: #fef2f2;
+  border: 1.5px solid #fecaca;
+  color: #dc2626;
+  border-radius: 10px;
+  padding: 12px 16px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+
+/* ── Form Footer ── */
+.srf-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  padding-top: 16px;
+  border-top: 1px solid #f0fdf4;
+  margin-top: 8px;
+}
+
+.srf-btn-primary {
+  padding: 12px 28px;
+  background: linear-gradient(135deg, #16a34a, #15803d);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-family: 'Nunito', sans-serif;
+  font-weight: 800;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: opacity 0.18s, transform 0.18s, box-shadow 0.18s;
+  box-shadow: 0 3px 12px rgba(22, 163, 74, 0.28);
+}
+
+.srf-btn-primary:hover:not(:disabled) {
+  opacity: 0.92;
+  transform: translateY(-1px);
+  box-shadow: 0 5px 16px rgba(22, 163, 74, 0.35);
+}
+
+.srf-btn-primary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.srf-btn-ghost {
+  padding: 12px 20px;
+  background: transparent;
+  color: #6b7280;
+  border: 1.5px solid #e5e7eb;
+  border-radius: 10px;
+  font-family: 'Nunito', sans-serif;
+  font-weight: 700;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.18s;
+}
+
+.srf-btn-ghost:hover {
+  background: #f9fafb;
+  border-color: #d1d5db;
+  color: #374151;
+}
+
+/* ── Success Screen ── */
+.srf-centered {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 80px 24px;
+}
+
+.srf-success-card {
+  background: white;
+  border: 1.5px solid #bbf7d0;
+  border-radius: 20px;
+  padding: 48px 40px;
+  text-align: center;
+  max-width: 460px;
+  box-shadow: 0 4px 24px rgba(22, 163, 74, 0.1);
+}
+
+.srf-success-icon  { font-size: 3rem; margin-bottom: 16px; }
+
+.srf-success-title {
+  font-family: 'Nunito', sans-serif;
+  font-size: 1.6rem;
+  font-weight: 900;
+  color: #111827;
+  margin: 0 0 12px;
+}
+
+.srf-success-desc {
+  color: #6b7280;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  margin: 0 0 32px;
+}
+
+.srf-success-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* ── Responsive ── */
+@media (max-width: 600px) {
+  .srf-form    { padding: 20px 16px; }
+  .srf-title   { font-size: 1.4rem; }
+  .srf-footer  { flex-direction: column-reverse; }
+  .srf-btn-primary,
+  .srf-btn-ghost { width: 100%; text-align: center; }
+}

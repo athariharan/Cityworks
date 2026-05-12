@@ -1,7 +1,7 @@
 // components/citizen/CitizenNavbar.jsx
 import { useState, useRef, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import "./Navbar.css";
+import "../../styles/Navbar.css";
  
 function CitizenNavbar({ user }) {
   const navigate = useNavigate();

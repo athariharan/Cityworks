@@ -1,6 +1,6 @@
 // components/citizen/CitizenFooter.jsx
 import { useNavigate } from "react-router-dom";
-import "./Footer.css";
+import "../../styles/Footer.css";
 
 function CitizenFooter() {
   const navigate = useNavigate();

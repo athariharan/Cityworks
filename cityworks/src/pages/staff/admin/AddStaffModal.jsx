@@ -1,7 +1,6 @@
-// pages/staff/admin/AddStaffModal.jsx
 import { useState } from "react";
-import StaffService from "../../../services/Staffservice";
-import "./AddStaffModal.css";
+import StaffService from "../../../services/StaffService";
+import "../../../styles/AddStaffModal.css";
 
 const ROLES = [
   "DISPATCHER", "CREW", "ASSET_MANAGER",
@@ -33,11 +32,48 @@ const EMPTY = {
   pan: "", aadhaar: "", accountNumber: "", skill: "",
 };
 
+// ── Defined OUTSIDE so React never remounts them on re-render ──
+
+function Field({ label, field, type = "text", placeholder = "", required = false, form, errors, set }) {
+  return (
+    <div className="asm-field">
+      <label className="asm-label">{label}{required && <span>*</span>}</label>
+      <input
+        className={`asm-input${errors[field] ? " error" : ""}`}
+        type={type}
+        placeholder={placeholder}
+        value={form[field]}
+        onChange={e => set(field, e.target.value)}
+      />
+      {errors[field] && <span className="asm-error-text">{errors[field]}</span>}
+    </div>
+  );
+}
+
+function Select({ label, field, options, labelMap, required = false, form, errors, set }) {
+  return (
+    <div className="asm-field">
+      <label className="asm-label">{label}{required && <span>*</span>}</label>
+      <select
+        className={`asm-select${errors[field] ? " error" : ""}`}
+        value={form[field]}
+        onChange={e => set(field, e.target.value)}
+      >
+        <option value="">— Select —</option>
+        {options.map(o => (
+          <option key={o} value={o}>{labelMap ? labelMap[o] : o}</option>
+        ))}
+      </select>
+      {errors[field] && <span className="asm-error-text">{errors[field]}</span>}
+    </div>
+  );
+}
+
 export default function AddStaffModal({ onClose, onSuccess }) {
-  const [form, setForm]       = useState(EMPTY);
-  const [errors, setErrors]   = useState({});
+  const [form, setForm]         = useState(EMPTY);
+  const [errors, setErrors]     = useState({});
   const [apiError, setApiError] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading]   = useState(false);
 
   const set = (field, value) => {
     setForm(f => ({ ...f, [field]: value }));
@@ -46,13 +82,13 @@ export default function AddStaffModal({ onClose, onSuccess }) {
 
   const validate = () => {
     const e = {};
-    if (!form.name.trim())         e.name          = "Required";
-    if (!form.role)                e.role          = "Required";
-    if (!form.email.trim())        e.email         = "Required";
-    if (!form.password.trim())     e.password      = "Required";
-    if (!form.phoneNumber.trim())  e.phoneNumber   = "Required";
-    if (!form.gender)              e.gender        = "Required";
-    if (!form.joiningDate)         e.joiningDate   = "Required";
+    if (!form.name.trim())          e.name          = "Required";
+    if (!form.role)                 e.role          = "Required";
+    if (!form.email.trim())         e.email         = "Required";
+    if (!form.password.trim())      e.password      = "Required";
+    if (!form.phoneNumber.trim())   e.phoneNumber   = "Required";
+    if (!form.gender)               e.gender        = "Required";
+    if (!form.joiningDate)          e.joiningDate   = "Required";
     if (!form.accountNumber.trim()) e.accountNumber = "Required";
     if (form.role === "CREW" && !form.skill) e.skill = "Required for Crew";
     return e;
@@ -71,11 +107,11 @@ export default function AddStaffModal({ onClose, onSuccess }) {
       password:         form.password,
       phoneNumber:      form.phoneNumber.trim(),
       gender:           form.gender,
-      bloodGroup:       form.bloodGroup || undefined,
-      joiningDate:      form.joiningDate || undefined,
+      bloodGroup:       form.bloodGroup    || undefined,
+      joiningDate:      form.joiningDate   || undefined,
       salary:           form.salary ? parseFloat(form.salary) : undefined,
       emergencyContact: form.emergencyContact.trim() || undefined,
-      pan:              form.pan.trim()  || undefined,
+      pan:              form.pan.trim()    || undefined,
       aadhaar:          form.aadhaar.trim() || undefined,
       accountNumber:    form.accountNumber.trim(),
       skill:            form.role === "CREW" ? form.skill : undefined,
@@ -97,42 +133,12 @@ export default function AddStaffModal({ onClose, onSuccess }) {
     }
   };
 
-  const F = ({ label, field, type = "text", placeholder = "", required = false }) => (
-    <div className="asm-field">
-      <label className="asm-label">{label}{required && <span>*</span>}</label>
-      <input
-        className={`asm-input${errors[field] ? " error" : ""}`}
-        type={type}
-        placeholder={placeholder}
-        value={form[field]}
-        onChange={e => set(field, e.target.value)}
-      />
-      {errors[field] && <span className="asm-error-text">{errors[field]}</span>}
-    </div>
-  );
-
-  const S = ({ label, field, options, labelMap, required = false }) => (
-    <div className="asm-field">
-      <label className="asm-label">{label}{required && <span>*</span>}</label>
-      <select
-        className={`asm-select${errors[field] ? " error" : ""}`}
-        value={form[field]}
-        onChange={e => set(field, e.target.value)}
-      >
-        <option value="">— Select —</option>
-        {options.map(o => (
-          <option key={o} value={o}>{labelMap ? labelMap[o] : o}</option>
-        ))}
-      </select>
-      {errors[field] && <span className="asm-error-text">{errors[field]}</span>}
-    </div>
-  );
+  const f = { form, errors, set };
 
   return (
     <div className="asm-overlay" onClick={e => e.target === e.currentTarget && onClose()}>
       <div className="asm-dialog">
 
-        {/* Header */}
         <div className="asm-header">
           <div className="asm-header-left">
             <div className="asm-header-icon">👤</div>
@@ -144,63 +150,56 @@ export default function AddStaffModal({ onClose, onSuccess }) {
           <button className="asm-close" onClick={onClose}>✕</button>
         </div>
 
-        {/* Body */}
         <form onSubmit={handleSubmit}>
           <div className="asm-body">
 
             {apiError && <div className="asm-alert asm-alert--error">{apiError}</div>}
 
-            {/* Personal */}
             <div className="asm-section">
               <p className="asm-section-label">Personal Information</p>
               <div className="asm-grid">
-                <F label="Full Name"   field="name"      placeholder="e.g. Ravi Kumar"  required />
-                <S label="Gender"      field="gender"    options={["MALE","FEMALE","OTHER"]} required />
-                <S label="Blood Group" field="bloodGroup" options={BLOOD_GROUPS} />
-                <F label="Joining Date" field="joiningDate" type="date" required />
+                <Field  label="Full Name"    field="name"        placeholder="e.g. Ravi Kumar" required {...f} />
+                <Select label="Gender"       field="gender"      options={["MALE","FEMALE","OTHER"]} required {...f} />
+                <Select label="Blood Group"  field="bloodGroup"  options={BLOOD_GROUPS} {...f} />
+                <Field  label="Joining Date" field="joiningDate" type="date" required {...f} />
               </div>
             </div>
 
-            {/* Contact */}
             <div className="asm-section">
               <p className="asm-section-label">Contact Details</p>
               <div className="asm-grid">
-                <F label="Email"             field="email"            placeholder="staff@citiworks.com" required />
-                <F label="Phone Number"      field="phoneNumber"      placeholder="10-digit mobile"     required />
-                <F label="Emergency Contact" field="emergencyContact" placeholder="10-digit mobile" />
+                <Field label="Email"             field="email"            placeholder="staff@citiworks.com" required {...f} />
+                <Field label="Phone Number"      field="phoneNumber"      placeholder="10-digit mobile"     required {...f} />
+                <Field label="Emergency Contact" field="emergencyContact" placeholder="10-digit mobile" {...f} />
               </div>
             </div>
 
-            {/* Role & Access */}
             <div className="asm-section">
               <p className="asm-section-label">Role & Access</p>
               <div className="asm-grid">
-                <S label="Role" field="role" options={ROLES} labelMap={ROLE_LABELS} required />
+                <Select label="Role" field="role" options={ROLES} labelMap={ROLE_LABELS} required {...f} />
                 {form.role === "CREW" && (
-                  <S label="Skill" field="skill" options={SKILLS} required />
+                  <Select label="Skill" field="skill" options={SKILLS} required {...f} />
                 )}
-                <F label="Password" field="password" type="password" placeholder="Min 8 chars, upper, lower, digit, symbol" required />
+                <Field label="Password" field="password" type="password"
+                       placeholder="Min 8 chars, upper, lower, digit, symbol" required {...f} />
               </div>
             </div>
 
-            {/* Financial & Identity */}
             <div className="asm-section">
               <p className="asm-section-label">Financial & Identity</p>
               <div className="asm-grid">
-                <F label="Salary (₹)"      field="salary"        type="number" placeholder="e.g. 45000" />
-                <F label="Account Number"  field="accountNumber" placeholder="9–18 digits" required />
-                <F label="PAN"             field="pan"           placeholder="e.g. ABCDE1234F" />
-                <F label="Aadhaar"         field="aadhaar"       placeholder="12-digit number" />
+                <Field label="Salary (₹)"     field="salary"        type="number" placeholder="e.g. 45000" {...f} />
+                <Field label="Account Number" field="accountNumber" placeholder="9–18 digits" required {...f} />
+                <Field label="PAN"            field="pan"           placeholder="e.g. ABCDE1234F" {...f} />
+                <Field label="Aadhaar"        field="aadhaar"       placeholder="12-digit number" {...f} />
               </div>
             </div>
 
           </div>
 
-          {/* Footer */}
           <div className="asm-footer">
-            <button type="button" className="asm-btn-cancel" onClick={onClose}>
-              Cancel
-            </button>
+            <button type="button" className="asm-btn-cancel" onClick={onClose}>Cancel</button>
             <button type="submit" className="asm-btn-submit" disabled={loading}>
               {loading && <span className="asm-spinner" />}
               {loading ? "Adding..." : "Add Staff Member"}

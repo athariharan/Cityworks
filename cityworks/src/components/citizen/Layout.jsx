@@ -1,7 +1,7 @@
 // components/citizen/Layout.jsx
 import CitizenNavbar from "./Navbar";
 import CitizenFooter from "./Footer";
-import "./Layout.css";
+import "../../styles/Layout.css";
 
 function CitizenLayout({ children, user }) {
   return (

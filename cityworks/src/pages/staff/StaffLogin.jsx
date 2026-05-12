@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { loginStaff, clearError } from "../../redux/slices/authSlice";
-import "./StaffLogin.css";
+import "../../styles/StaffLogin.css";
 
 function StaffLogin() {
   const navigate = useNavigate();

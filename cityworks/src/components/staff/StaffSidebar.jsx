@@ -1,7 +1,7 @@
 // components/staff/StaffSidebar.jsx
 import { useSelector } from "react-redux";
 import { useNavigate, useLocation } from "react-router-dom";
-import "./StaffSidebar.css";
+import "../../styles/StaffSidebar.css";
 
 // ── Role-based sidebar links ──────────────────────────────
 const roleLinks = {
@@ -27,13 +27,12 @@ const roleLinks = {
     { icon: "📰", label: "News",             path: "/staff/news" },
   ],
   OPERATIONS_MANAGER: [
-    { icon: "📊", label: "Dashboard",        path: "/staff/home" },
-    { icon: "📋", label: "Service Requests", path: "/staff/requests" },
-    { icon: "🔧", label: "Work Orders",      path: "/staff/workorders" },
-    { icon: "📈", label: "KPIs",             path: "/staff/kpis" },
-    { icon: "📑", label: "Reports",          path: "/staff/reports" },
-    { icon: "📰", label: "News",             path: "/staff/news" },
-  ],
+  { icon: "📊", label: "Dashboard",       path: "/staff/home" },
+  { icon: "🔧", label: "Work Orders",     path: "/staff/operations/workorders" },
+  { icon: "📋", label: "Create Work Log", path: "/staff/operations/worklogs/create" },
+  { icon: "📈", label: "KPIs",            path: "/staff/kpis" },
+  { icon: "📰", label: "News",            path: "/staff/news" },
+],
   FINANCE_OFFICER: [
     { icon: "📊", label: "Dashboard",        path: "/staff/home" },
     { icon: "💰", label: "Costs",            path: "/staff/costs" },
@@ -42,14 +41,12 @@ const roleLinks = {
     { icon: "📰", label: "News",             path: "/staff/news" },
   ],
   ADMINISTRATOR: [
-    { icon: "📊", label: "Dashboard",          path: "/staff/home" },
-    { icon: "📡", label: "Dispatcher",         path: "/staff/requests" },
-    { icon: "🦺", label: "Field Crew",         path: "/staff/workorders" },
-    { icon: "🏗️", label: "Asset Manager",      path: "/staff/assets/registry/list" },
-    { icon: "📈", label: "Operations Manager", path: "/staff/kpis" },
-    { icon: "💰", label: "Finance Officer",    path: "/staff/costs" },
-    { icon: "📜", label: "Compliance Officer", path: "/staff/audit" },
-    { icon: "📰", label: "News",               path: "/staff/news" },
+    { icon: "📊", label: "Dashboard",        path: "/staff/home" },
+    { icon: "🛡️", label: "Roles",            path: "/staff/roles" },
+    { icon: "📋", label: "Service Requests", path: "/staff/requests" },
+    { icon: "🔧", label: "Work Orders",      path: "/staff/workorders" },
+    { icon: "🏗️", label: "Assets",           path: "/staff/assets" },
+    { icon: "📰", label: "News",             path: "/staff/news" },
   ],
   COMPLIANCE_OFFICER: [
     { icon: "📊", label: "Dashboard",        path: "/staff/home" },

@@ -2,7 +2,7 @@
 import { useState } from "react";
 import StaffNavbar  from "./StaffNavbar";
 import StaffSidebar from "./StaffSidebar";
-import "./StaffLayout.css";
+import "../../styles/StaffLayout.css";
 
 function StaffLayout({ children }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);

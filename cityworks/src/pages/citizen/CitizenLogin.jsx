@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { loginUser, registerUser, clearError } from "../../redux/slices/authSlice";
-import "./CitizenLogin.css";
+import "../../styles/CitizenLogin.css";
 
 function CitizenLogin() {
   const navigate = useNavigate();

@@ -2,7 +2,7 @@
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import CitizenLayout from "../../components/citizen/Layout";
-import "./CitizenHome.css";
+import "../../styles/CitizenHome.css";
  
 function CitizenHome() {
   const navigate = useNavigate();
