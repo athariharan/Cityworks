@@ -1,0 +1,152 @@
+/* ============================================================
+   ReportCreatePage.css
+   ============================================================ */
+
+.rcreate-container {
+  padding: 22px 28px;
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+}
+
+.rcreate-card {
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 28px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.rcreate-card h1 {
+  font-size: 24px;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0 0 20px 0;
+}
+
+/* ── Error ── */
+.rcreate-error {
+  padding: 12px 16px;
+  background: #fee2e2;
+  border-left: 4px solid #ef4444;
+  color: #991b1b;
+  border-radius: 4px;
+  font-size: 13px;
+  margin-bottom: 20px;
+}
+
+/* ── Form ── */
+.rcreate-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.rcreate-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.rcreate-group label {
+  font-weight: 600;
+  color: #334155;
+  font-size: 13px;
+}
+
+.rcreate-group input,
+.rcreate-group select,
+.rcreate-group textarea {
+  padding: 10px 12px;
+  border: 1px solid #cbd5e1;
+  border-radius: 4px;
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  font-size: 13px;
+  color: #334155;
+}
+
+.rcreate-group input:focus,
+.rcreate-group select:focus,
+.rcreate-group textarea:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.rcreate-group textarea {
+  resize: vertical;
+  font-family: 'Courier New', monospace;
+  min-height: 100px;
+}
+
+.rcreate-group small {
+  font-size: 11px;
+  color: #94a3b8;
+}
+
+/* ── Actions ── */
+.rcreate-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+  margin-top: 10px;
+}
+
+.rcreate-btn-cancel,
+.rcreate-btn-submit {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.rcreate-btn-cancel {
+  background: #f1f5f9;
+  color: #475569;
+  border: 1px solid #cbd5e1;
+}
+
+.rcreate-btn-cancel:hover:not(:disabled) {
+  background: #e2e8f0;
+}
+
+.rcreate-btn-submit {
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+  color: white;
+}
+
+.rcreate-btn-submit:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+}
+
+.rcreate-btn-submit:disabled,
+.rcreate-btn-cancel:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* ── Responsive ── */
+@media (max-width: 600px) {
+  .rcreate-container {
+    padding: 12px 16px;
+  }
+
+  .rcreate-card {
+    padding: 16px;
+  }
+
+  .rcreate-actions {
+    flex-direction: column;
+  }
+
+  .rcreate-btn-cancel,
+  .rcreate-btn-submit {
+    width: 100%;
+  }
+}

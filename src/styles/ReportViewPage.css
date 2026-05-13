@@ -1,0 +1,273 @@
+/* ============================================================
+   ReportViewPage.css
+   ============================================================ */
+
+.rview-container {
+  padding: 22px 28px;
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+}
+
+/* ── Header ── */
+.rview-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.rview-btn-back {
+  padding: 8px 14px;
+  background: #f1f5f9;
+  border: 1px solid #cbd5e1;
+  border-radius: 4px;
+  color: #475569;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.rview-btn-back:hover {
+  background: #e2e8f0;
+}
+
+.rview-header h1 {
+  font-size: 24px;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0;
+  flex: 1;
+  min-width: 150px;
+}
+
+.rview-header-actions {
+  display: flex;
+  gap: 8px;
+}
+
+/* ── Loading/Error/NotFound ── */
+.rview-loading,
+.rview-error,
+.rview-notfound {
+  padding: 40px 20px;
+  text-align: center;
+  background: white;
+  border-radius: 6px;
+  border: 1px solid #e2e8f0;
+}
+
+.rview-error {
+  background: #fee2e2;
+  border-left: 4px solid #ef4444;
+  color: #991b1b;
+}
+
+/* ── Card ── */
+.rview-card {
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 28px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.rview-card h2 {
+  font-size: 18px;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0 0 20px 0;
+}
+
+/* ── Form ── */
+.rview-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.rview-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.rview-group label {
+  font-weight: 600;
+  color: #334155;
+  font-size: 13px;
+}
+
+.rview-group input,
+.rview-group select,
+.rview-group textarea {
+  padding: 10px 12px;
+  border: 1px solid #cbd5e1;
+  border-radius: 4px;
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  font-size: 13px;
+  color: #334155;
+}
+
+.rview-group input:focus,
+.rview-group select:focus,
+.rview-group textarea:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.rview-group textarea {
+  resize: vertical;
+  font-family: 'Courier New', monospace;
+}
+
+/* ── View Mode Fields ── */
+.rview-field {
+  border-bottom: 1px solid #f1f5f9;
+  padding: 16px 0;
+}
+
+.rview-field:last-child {
+  border-bottom: none;
+}
+
+.rview-field label {
+  display: block;
+  font-weight: 600;
+  color: #334155;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 8px;
+}
+
+.rview-field p {
+  margin: 0;
+  color: #334155;
+  font-size: 13px;
+  word-break: break-all;
+}
+
+.rview-badge {
+  display: inline-block;
+  padding: 4px 10px;
+  background: #dbeafe;
+  color: #1e40af;
+  border-radius: 4px;
+  font-weight: 600;
+  font-size: 11px;
+}
+
+.rview-json {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 4px;
+  padding: 12px;
+  overflow-x: auto;
+  font-family: 'Courier New', monospace;
+  font-size: 12px;
+  color: #334155;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  margin: 0;
+}
+
+/* ── Actions ── */
+.rview-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+  margin-top: 10px;
+  padding-top: 20px;
+  border-top: 1px solid #e2e8f0;
+}
+
+.rview-btn-edit,
+.rview-btn-delete,
+.rview-btn-cancel,
+.rview-btn-save {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.rview-btn-edit {
+  background: #dbeafe;
+  color: #1e40af;
+  border: 1px solid #bfdbfe;
+}
+
+.rview-btn-edit:hover {
+  background: #bfdbfe;
+}
+
+.rview-btn-delete {
+  background: #fee2e2;
+  color: #991b1b;
+  border: 1px solid #fecaca;
+}
+
+.rview-btn-delete:hover {
+  background: #fecaca;
+}
+
+.rview-btn-cancel {
+  background: #f1f5f9;
+  color: #475569;
+  border: 1px solid #cbd5e1;
+}
+
+.rview-btn-cancel:hover {
+  background: #e2e8f0;
+}
+
+.rview-btn-save {
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+  color: white;
+}
+
+.rview-btn-save:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+}
+
+/* ── Responsive ── */
+@media (max-width: 600px) {
+  .rview-container {
+    padding: 12px 16px;
+  }
+
+  .rview-card {
+    padding: 16px;
+  }
+
+  .rview-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .rview-btn-back {
+    width: 100%;
+  }
+
+  .rview-actions {
+    flex-direction: column;
+  }
+
+  .rview-btn-edit,
+  .rview-btn-delete,
+  .rview-btn-cancel,
+  .rview-btn-save {
+    width: 100%;
+  }
+}
