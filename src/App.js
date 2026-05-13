@@ -16,12 +16,22 @@ import InspectionListPage  from "./pages/staff/asset/InspectionListPage";
 import MaintenancePage     from "./pages/staff/asset/MaintenancePage";
 import MaintenanceListPage from "./pages/staff/asset/MaintenanceListPage";
 
-import ServiceRequestsPage from "./pages/staff/dispatcher/ServiceRequestsPage";
-import WorkOrdersPage      from "./pages/staff/dispatcher/WorkOrdersPage";
-import CrewsPage           from "./pages/staff/dispatcher/CrewsPage";
+import ServiceRequestsPage  from "./pages/staff/dispatcher/ServiceRequestsPage";
+import WorkOrdersPage       from "./pages/staff/dispatcher/WorkOrdersPage";
+import CrewsPage            from "./pages/staff/dispatcher/CrewsPage";
 
-const STAFF_ROLES    = ["DISPATCHER","CREW","ASSET_MANAGER","OPERATIONS_MANAGER","FINANCE_OFFICER","ADMINISTRATOR","COMPLIANCE_OFFICER"];
+import OperationsLanding     from "./pages/staff/operations/OperationsLanding";
+import WorkOrderPriorityPage from "./pages/staff/operations/WorkOrderPriorityPage";
+import WorkLogCreatePage     from "./pages/staff/operations/WorkLogCreatePage";
+import KpiPage               from "./pages/staff/operations/KpiPage";
+import ReportListPage        from "./pages/staff/operations/ReportListPage";
+import ReportCreatePage      from "./pages/staff/operations/ReportCreatePage";
+import ReportViewPage        from "./pages/staff/operations/ReportViewPage";
+
+const STAFF_ROLES      = ["DISPATCHER","CREW","ASSET_MANAGER","OPERATIONS_MANAGER","FINANCE_OFFICER","ADMINISTRATOR","COMPLIANCE_OFFICER"];
 const DISPATCHER_ROLES = ["DISPATCHER", "ADMINISTRATOR"];
+const OPERATIONS_ROLES = ["OPERATIONS_MANAGER", "ADMINISTRATOR"];
+const KPI_ROLES        = ["OPERATIONS_MANAGER", "ADMINISTRATOR"];
 
 function App() {
   return (
@@ -54,6 +64,24 @@ function App() {
         <Route path="/staff/assets/maintenance/list" element={<MaintenanceListPage />} />
         <Route path="/staff/inspections"             element={<InspectionPage />} />
         <Route path="/staff/maintenance"             element={<MaintenancePage />} />
+
+        {/* ── Operations Manager Module ── */}
+        <Route path="/staff/operations"
+          element={<ProtectedRoute allowedRoles={OPERATIONS_ROLES} loginPath="/staff"><OperationsLanding /></ProtectedRoute>} />
+        <Route path="/staff/operations/workorders"
+          element={<ProtectedRoute allowedRoles={OPERATIONS_ROLES} loginPath="/staff"><WorkOrderPriorityPage /></ProtectedRoute>} />
+        <Route path="/staff/operations/worklogs/create"
+          element={<ProtectedRoute allowedRoles={OPERATIONS_ROLES} loginPath="/staff"><WorkLogCreatePage /></ProtectedRoute>} />
+        <Route path="/staff/kpis"
+          element={<ProtectedRoute allowedRoles={OPERATIONS_ROLES} loginPath="/staff"><KpiPage /></ProtectedRoute>} />
+
+        {/* ── Reports Module ── */}
+        <Route path="/staff/reports"
+          element={<ProtectedRoute allowedRoles={["OPERATIONS_MANAGER","ADMINISTRATOR","COMPLIANCE_OFFICER"]} loginPath="/staff"><ReportListPage /></ProtectedRoute>} />
+        <Route path="/staff/reports/create"
+          element={<ProtectedRoute allowedRoles={["OPERATIONS_MANAGER","ADMINISTRATOR","COMPLIANCE_OFFICER"]} loginPath="/staff"><ReportCreatePage /></ProtectedRoute>} />
+        <Route path="/staff/reports/:reportId"
+          element={<ProtectedRoute allowedRoles={["OPERATIONS_MANAGER","ADMINISTRATOR","COMPLIANCE_OFFICER"]} loginPath="/staff"><ReportViewPage /></ProtectedRoute>} />
 
         {/* ── Fallback ── */}
         <Route path="/staff/*" element={<Navigate to="/staff/home" replace />} />
