@@ -19,7 +19,8 @@ const DispatcherService = {
   deleteWorkOrder:  (id)       => api.delete(`/api/workorders/${id}`),
 
   // ── Field Workers (Crews) ──────────────────────────────
-  getAllFieldWorkers: () => api.get("/api/fieldworker"),
+  getAllFieldWorkers:       ()         => api.get("/api/fieldworker"),
+  getFieldWorkerByStaffId: (staffId)  => api.get(`/api/fieldworker/by-staff/${staffId}`),
 };
 
 export default DispatcherService;

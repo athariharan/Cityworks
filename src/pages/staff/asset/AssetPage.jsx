@@ -1,7 +1,7 @@
 // pages/staff/asset/AssetPage.jsx
 import { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAssets } from "../../../context/AssetContext";
+import { assetService } from "../../../services/Assetservice";
 import "../../../styles/assetmanager.css";
 import StaffLayout from "../../../components/staff/StaffLayout";
 
@@ -16,8 +16,16 @@ const ASSET_GROUPS = [
   { group: "🚧 Signage & Safety",           types: ["ROAD_SIGN", "BOUNDARY_WALL", "CCTV_CAMERA"] },
 ];
 
-const ASSET_STATUSES = ["Active", "Inactive", "Under_Maintenance", "Decommissioned"];
-const DOC_TYPES      = ["Invoice", "Permit", "Inspection_Report", "Blueprint", "Manual"];
+const ASSET_STATUSES = [
+  { value: "ACTIVE",   label: "Active" },
+  { value: "INACTIVE", label: "Inactive" },
+];
+const DOC_TYPES = [
+  { value: "PDF",  label: "PDF" },
+  { value: "PNG",  label: "PNG Image" },
+  { value: "JPG",  label: "JPG Image" },
+  { value: "JPEG", label: "JPEG Image" },
+];
 
 const INITIAL = { assetTag:"", type:"", status:"", locationGeoJSON:"", installDate:"", docType:"" };
 
@@ -33,7 +41,6 @@ function validate(form) {
 
 export default function AssetPage() {
   const navigate = useNavigate();
-  const { addAsset } = useAssets();
   const [form,    setForm]    = useState(INITIAL);
   const [errors,  setErrors]  = useState({});
   const [file,    setFile]    = useState(null);
@@ -63,11 +70,25 @@ export default function AssetPage() {
     const errs = validate(form);
     if (Object.keys(errs).length) { setErrors(errs); return; }
     setLoading(true);
-    await new Promise(r => setTimeout(r, 1000));
-    addAsset({ ...form, fileName: file?.name || null, submittedAt: new Date().toLocaleString("en-IN") });
-    setLoading(false); setSuccess(true);
-    setForm(INITIAL); setFile(null); setPreview(null);
-    setTimeout(() => setSuccess(false), 4000);
+    try {
+      const fd = new FormData();
+      fd.append("assetTag",        form.assetTag);
+      fd.append("type",            form.type);
+      fd.append("status",          form.status);
+      fd.append("installDate",     form.installDate);
+      if (form.locationGeoJSON) fd.append("locationGeoJSON", form.locationGeoJSON);
+      if (form.docType)         fd.append("docType",         form.docType);
+      if (file)                 fd.append("photoFile",       file);
+
+      await assetService.create(fd);
+      setSuccess(true);
+      setForm(INITIAL); setFile(null); setPreview(null);
+      setTimeout(() => setSuccess(false), 4000);
+    } catch (err) {
+      setErrors({ submit: err.message || "Failed to register asset. Please try again." });
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -166,7 +187,7 @@ export default function AssetPage() {
                 >
                   <option value="">Select status</option>
                   {ASSET_STATUSES.map(s => (
-                    <option key={s} value={s}>{s.replace(/_/g, " ")}</option>
+                    <option key={s.value} value={s.value}>{s.label}</option>
                   ))}
                 </select>
                 {errors.status && <span className="err-msg">{errors.status}</span>}
@@ -194,7 +215,7 @@ export default function AssetPage() {
               <select className="input" name="docType" value={form.docType} onChange={handleChange}>
                 <option value="">Select document type</option>
                 {DOC_TYPES.map(d => (
-                  <option key={d} value={d}>{d.replace(/_/g, " ")}</option>
+                  <option key={d.value} value={d.value}>{d.label}</option>
                 ))}
               </select>
             </div>
@@ -202,7 +223,7 @@ export default function AssetPage() {
             <div className="field mt-16">
               <label className="label">Upload File</label>
               <div className="upload-zone" onClick={() => fileRef.current.click()}>
-                <input ref={fileRef} type="file" accept="image/*,.pdf,.doc,.docx"
+                <input ref={fileRef} type="file" accept=".pdf,image/png,image/jpeg"
                   style={{ display: "none" }} onChange={handleFile}
                 />
                 {file ? (
@@ -224,7 +245,7 @@ export default function AssetPage() {
                       <line x1="12" y1="3" x2="12" y2="15"/>
                     </svg>
                     <span>Click to upload document or image</span>
-                    <span className="hint">PDF, DOC, or Image files</span>
+                    <span className="hint">PDF, PNG, or JPG/JPEG images only</span>
                   </div>
                 )}
               </div>
@@ -235,6 +256,12 @@ export default function AssetPage() {
               )}
             </div>
           </div>
+
+          {errors.submit && (
+            <div className="alert alert-error" style={{ marginTop: 12 }}>
+              {errors.submit}
+            </div>
+          )}
 
           <div className="actions">
             <button type="button" className="btn-secondary"

@@ -1,7 +1,7 @@
 // components/staff/StaffSidebar.jsx
 import { useSelector } from "react-redux";
 import { useNavigate, useLocation } from "react-router-dom";
-import "./StaffSidebar.css";
+import "../../styles/StaffSidebar.css";
 
 // ── Role-based sidebar links ──────────────────────────────
 const roleLinks = {
@@ -10,50 +10,57 @@ const roleLinks = {
     { icon: "📋", label: "Service Requests", path: "/staff/requests" },
     { icon: "🔧", label: "Work Orders",      path: "/staff/workorders" },
     { icon: "👥", label: "Crews",            path: "/staff/crews" },
+    { icon: "🔔", label: "Notifications",    path: "/staff/notifications" },
     { icon: "📰", label: "News",             path: "/staff/news" },
   ],
   CREW: [
     { icon: "📊", label: "Dashboard",        path: "/staff/home" },
     { icon: "✅", label: "My Tasks",         path: "/staff/tasks" },
-    { icon: "🔧", label: "Work Orders",      path: "/staff/workorders" },
-    { icon: "📷", label: "Evidence Upload",  path: "/staff/evidence" },
-    { icon: "📰", label: "News",             path: "/staff/news" },
+    { icon: "🔧", label: "Work Orders",      path: "/staff/crew/workorders" },
+    { icon: "📷", label: "Evidence Upload",  path: "/staff/crew/evidence" },
+    { icon: "🔔", label: "Notifications",    path: "/staff/notifications" },
   ],
   ASSET_MANAGER: [
     { icon: "📊", label: "Dashboard",        path: "/staff/home" },
     { icon: "🏗️", label: "Assets",           path: "/staff/assets" },
     { icon: "🔍", label: "Inspections",      path: "/staff/inspections" },
     { icon: "🛠️", label: "Maintenance",      path: "/staff/maintenance" },
+    { icon: "🔔", label: "Notifications",    path: "/staff/notifications" },
     { icon: "📰", label: "News",             path: "/staff/news" },
   ],
   OPERATIONS_MANAGER: [
-    { icon: "📊", label: "Dashboard",        path: "/staff/home" },
-    { icon: "📋", label: "Service Requests", path: "/staff/requests" },
-    { icon: "🔧", label: "Work Orders",      path: "/staff/workorders" },
-    { icon: "📈", label: "KPIs",             path: "/staff/kpis" },
-    { icon: "📑", label: "Reports",          path: "/staff/reports" },
-    { icon: "📰", label: "News",             path: "/staff/news" },
+    { icon: "📊", label: "Dashboard",       path: "/staff/home" },
+    { icon: "🔧", label: "Work Orders",     path: "/staff/operations/workorders" },
+    { icon: "📋", label: "Create Work Log", path: "/staff/operations/worklogs/create" },
+    { icon: "📈", label: "KPIs",            path: "/staff/kpis" },
+    { icon: "📑", label: "Reports",         path: "/staff/reports" },
+    { icon: "🔔", label: "Notifications",   path: "/staff/notifications" },
+    { icon: "📰", label: "News",            path: "/staff/news" },
   ],
   FINANCE_OFFICER: [
     { icon: "📊", label: "Dashboard",        path: "/staff/home" },
-    { icon: "💰", label: "Costs",            path: "/staff/costs" },
     { icon: "🧰", label: "Material Usage",   path: "/staff/materials" },
-    { icon: "🧾", label: "Invoices",         path: "/staff/invoices" },
+    { icon: "📒", label: "Work Logs",        path: "/staff/finance/worklogs" },
+    { icon: "🔔", label: "Notifications",    path: "/staff/notifications" },
     { icon: "📰", label: "News",             path: "/staff/news" },
   ],
   ADMINISTRATOR: [
     { icon: "📊", label: "Dashboard",        path: "/staff/home" },
-    { icon: "🛡️", label: "Roles",            path: "/staff/roles" },
     { icon: "📋", label: "Service Requests", path: "/staff/requests" },
     { icon: "🔧", label: "Work Orders",      path: "/staff/workorders" },
     { icon: "🏗️", label: "Assets",           path: "/staff/assets" },
+    { icon: "📈", label: "KPIs",             path: "/staff/kpis" },
+    { icon: "📑", label: "Reports",          path: "/staff/reports" },
+    { icon: "🗂️", label: "Audit Logs",       path: "/staff/audit" },
+    { icon: "🔔", label: "Notifications",    path: "/staff/notifications" },
     { icon: "📰", label: "News",             path: "/staff/news" },
   ],
   COMPLIANCE_OFFICER: [
     { icon: "📊", label: "Dashboard",        path: "/staff/home" },
-    { icon: "📜", label: "Audit Logs",       path: "/staff/audit" },
     { icon: "🔍", label: "Inspections",      path: "/staff/inspections" },
     { icon: "📑", label: "Reports",          path: "/staff/reports" },
+    { icon: "🗂️", label: "Audit Logs",       path: "/staff/audit" },
+    { icon: "🔔", label: "Notifications",    path: "/staff/notifications" },
     { icon: "📰", label: "News",             path: "/staff/news" },
   ],
 };

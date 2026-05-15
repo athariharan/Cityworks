@@ -28,11 +28,41 @@
   cursor: pointer;
   flex-shrink: 0;
 }
- 
+
+.cnav-logo-corner-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 6px;
+}
+
+/* Decorative corner marks */
+.cnav-lc {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  border-color: #16a34a;
+  border-style: solid;
+  opacity: 0.5;
+}
+.cnav-lc-tl { top: 0;    left: 0;    border-width: 1.5px 0 0 1.5px; }
+.cnav-lc-tr { top: 0;    right: 0;   border-width: 1.5px 1.5px 0 0; }
+.cnav-lc-bl { bottom: 0; left: 0;    border-width: 0 0 1.5px 1.5px; }
+.cnav-lc-br { bottom: 0; right: 0;   border-width: 0 1.5px 1.5px 0; }
+
+/* Civic icon SVG */
+.cnav-civic-icon {
+  width: 28px;
+  height: 28px;
+  color: #16a34a;
+  flex-shrink: 0;
+}
+
 .cnav-logo-icon {
   font-size: 1.5rem;
 }
- 
+
 .cnav-logo-text {
   font-family: 'Nunito', sans-serif;
   font-size: 1.25rem;
@@ -100,8 +130,9 @@
   outline: none;
   box-shadow: none;
 }
- 
-.cnav-profile:hover {
+
+.cnav-profile:hover,
+.cnav-profile--open {
   background: #f0fdf4;
 }
  
@@ -149,10 +180,10 @@
   top: calc(100% + 6px);
   right: 0;
   background: #ffffff;
-  border: none;
-  border-radius: 10px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.09);
-  min-width: 155px;
+  border: 1px solid #f0f0f0;
+  border-radius: 12px;
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.12);
+  min-width: 220px;
   z-index: 200;
   overflow: hidden;
   animation: dropdownFadeIn 0.15s ease;
@@ -296,4 +327,169 @@
     right: 0;
     min-width: 140px;
   }
+}
+
+/* ══════════════════════════════════════════════
+   Dropdown — header row (avatar + name + role)
+══════════════════════════════════════════════ */
+.cnav-dropdown-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 16px 12px;
+}
+
+.cnav-dropdown-avatar {
+  width: 38px;
+  height: 38px;
+  background: linear-gradient(135deg, #16a34a, #15803d);
+  color: #fff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Nunito', sans-serif;
+  font-weight: 800;
+  font-size: 0.85rem;
+  flex-shrink: 0;
+}
+
+.cnav-dropdown-name {
+  font-family: 'Nunito', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #111827;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 140px;
+}
+
+.cnav-dropdown-role {
+  font-size: 0.75rem;
+  color: #6b7280;
+  margin-top: 1px;
+}
+
+/* ══════════════════════════════════════════════
+   Profile card view (inside dropdown)
+══════════════════════════════════════════════ */
+.cnav-profile-card-header {
+  padding: 10px 14px 6px;
+}
+
+.cnav-back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #6b7280;
+  padding: 4px 8px;
+  border-radius: 6px;
+  transition: background 0.15s, color 0.15s;
+}
+.cnav-back-btn:hover { background: #f3f4f6; color: #16a34a; }
+
+.cnav-profile-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px 16px 14px;
+  gap: 6px;
+}
+
+.cnav-profile-card-avatar {
+  width: 56px;
+  height: 56px;
+  background: linear-gradient(135deg, #16a34a, #15803d);
+  color: #fff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Nunito', sans-serif;
+  font-weight: 800;
+  font-size: 1.2rem;
+  margin-bottom: 2px;
+  box-shadow: 0 2px 10px rgba(22,163,74,0.25);
+}
+
+.cnav-profile-card-name {
+  font-family: 'Nunito', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: #111827;
+}
+
+.cnav-profile-card-badge {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  background: #f0fdf4;
+  color: #16a34a;
+  border: 1px solid #bbf7d0;
+  border-radius: 20px;
+  padding: 2px 10px;
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+
+.cnav-profile-card-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #16a34a;
+  display: inline-block;
+}
+
+/* ══════════════════════════════════════════════
+   Profile details rows
+══════════════════════════════════════════════ */
+.cnav-profile-details {
+  padding: 8px 0 10px;
+  display: flex;
+  flex-direction: column;
+}
+
+.cnav-profile-detail-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 8px 16px;
+  transition: background 0.12s;
+}
+.cnav-profile-detail-row:hover { background: #f9fafb; }
+
+.cnav-detail-icon {
+  width: 28px;
+  height: 28px;
+  background: #f0fdf4;
+  color: #16a34a;
+  border-radius: 7px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.cnav-detail-label {
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: #9ca3af;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-bottom: 1px;
+}
+
+.cnav-detail-value {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #1f2937;
+  word-break: break-all;
 }

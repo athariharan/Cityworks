@@ -1,7 +1,8 @@
 // components/citizen/Layout.jsx
-import CitizenNavbar from "./Navbar";
-import CitizenFooter from "./Footer";
-import "./Layout.css";
+import CitizenNavbar   from "./Navbar";
+import CitizenFooter   from "./Footer";
+import CitizenChatBot  from "./CitizenChatBot";
+import "../../styles/Layout.css";
 
 function CitizenLayout({ children, user }) {
   return (
@@ -11,6 +12,9 @@ function CitizenLayout({ children, user }) {
         {children}
       </main>
       <CitizenFooter />
+
+      {/* Floating chat assistant — visible on all citizen pages */}
+      <CitizenChatBot />
     </div>
   );
 }

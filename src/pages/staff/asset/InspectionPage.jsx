@@ -1,7 +1,8 @@
 // pages/staff/asset/InspectionPage.jsx
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAssets } from "../../../context/AssetContext";
+import { inspectionService } from "../../../services/Inspectionservice";
+import { assetService }      from "../../../services/Assetservice";
 import "../../../styles/assetmanager.css";
 import StaffLayout from "../../../components/staff/StaffLayout";
 
@@ -13,23 +14,38 @@ const CONDITION_OPTIONS = [
   { value:"CRITICAL",  label:"Critical",  color:"#7f1d1d", bg:"#ffe0e0", dot:"#dc2626", msg:"Immediate action required"   },
 ];
 
-const STATUSES = ["Pending", "Completed", "Requires_Action", "Closed"];
+const STATUSES = ["PENDING", "COMPLETED", "REQUIRES_ACTION", "CLOSED"];
 
 const INITIAL = {
-  assetTag:"", inspectorName:"", performedAt:"",
-  conditionRating:"", findings:"", status:""
+  assetId: "", inspectorName: "", performedAt: "",
+  conditionRating: "", findings: "", status: "",
 };
 
 export default function InspectionPage() {
   const navigate = useNavigate();
-  const { addInspection } = useAssets();
-  const [form,    setForm]    = useState(INITIAL);
-  const [errors,  setErrors]  = useState({});
-  const [photo,   setPhoto]   = useState(null);
-  const [preview, setPreview] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [success, setSuccess] = useState(false);
+
+  const [form,       setForm]       = useState(INITIAL);
+  const [errors,     setErrors]     = useState({});
+  const [photo,      setPhoto]      = useState(null);
+  const [preview,    setPreview]    = useState(null);
+  const [loading,    setLoading]    = useState(false);
+  const [success,    setSuccess]    = useState(false);
+  const [submitErr,  setSubmitErr]  = useState("");
+  const [assets,     setAssets]     = useState([]);
   const photoRef = useRef();
+
+  // Load asset list on mount
+  useEffect(() => {
+    assetService.getAll()
+      .then(res => {
+        const body = res?.data ?? res;
+        const list = Array.isArray(body)      ? body
+          : Array.isArray(body?.data)         ? body.data
+          : Array.isArray(body?.data?.data)   ? body.data.data : [];
+        setAssets(list);
+      })
+      .catch(() => {/* assets will remain empty, dropdown shows placeholder */});
+  }, []);
 
   const selectedCondition = CONDITION_OPTIONS.find(c => c.value === form.conditionRating);
 
@@ -54,10 +70,7 @@ export default function InspectionPage() {
 
   const validate = () => {
     const e = {};
-    if (!form.assetTag || !form.assetTag.trim())
-                               e.assetTag         = "Asset tag is required";
-    if (!form.inspectorName || !form.inspectorName.trim())
-                               e.inspectorName    = "Inspector name is required";
+    if (!form.assetId)         e.assetId         = "Please select an asset";
     if (!form.conditionRating) e.conditionRating  = "Condition rating is required";
     if (!form.status)          e.status           = "Status is required";
     return e;
@@ -67,16 +80,30 @@ export default function InspectionPage() {
     e.preventDefault();
     const errs = validate();
     if (Object.keys(errs).length) { setErrors(errs); return; }
+
     setLoading(true);
-    await new Promise(r => setTimeout(r, 1000));
-    addInspection({
-      ...form,
-      submittedAt: new Date().toLocaleString("en-IN"),
-      photoFile:   photo?.name || null,
-    });
-    setLoading(false); setSuccess(true);
-    setForm(INITIAL); setPhoto(null); setPreview(null);
-    setTimeout(() => setSuccess(false), 4000);
+    setSubmitErr("");
+    try {
+      await inspectionService.create({
+        assetId:         Number(form.assetId),
+        inspectorId:     null,
+        inspectorName:   form.inspectorName || null,
+        performedAt:     form.performedAt   || null,
+        conditionRating: form.conditionRating,
+        findings:        form.findings      || null,
+        photoUri:        photo?.name        || null,
+        status:          form.status        || null,
+      });
+      setSuccess(true);
+      setForm(INITIAL);
+      setPhoto(null);
+      setPreview(null);
+      setTimeout(() => setSuccess(false), 4000);
+    } catch (err) {
+      setSubmitErr(err.message || "Failed to save inspection. Please try again.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -111,10 +138,19 @@ export default function InspectionPage() {
             <svg width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
               <circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/>
             </svg>
-            Inspection saved!
+            Inspection saved to database!
             <span className="alert-link" onClick={() => navigate("/staff/assets/inspections/list")}>
               View All Records →
             </span>
+          </div>
+        )}
+
+        {submitErr && (
+          <div className="alert alert-error">
+            <svg width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+              <circle cx="12" cy="12" r="10"/><path d="M12 8v4m0 4h.01"/>
+            </svg>
+            {submitErr}
           </div>
         )}
 
@@ -125,26 +161,31 @@ export default function InspectionPage() {
             <div className="card-section-label">Inspection Info</div>
             <div className="form-grid-2">
 
-              {/* Asset Tag — text input */}
+              {/* Asset dropdown — real data from API */}
               <div className="field">
-                <label className="label">Asset Tag <span className="req">*</span></label>
-                <input
-                  className={`input ${errors.assetTag ? "input-error" : ""}`}
-                  name="assetTag" value={form.assetTag} onChange={handleChange}
-                  placeholder="e.g. RD-2024-001"
-                />
-                {errors.assetTag && <span className="err-msg">{errors.assetTag}</span>}
+                <label className="label">Asset <span className="req">*</span></label>
+                <select
+                  className={`input ${errors.assetId ? "input-error" : ""}`}
+                  name="assetId" value={form.assetId} onChange={handleChange}
+                >
+                  <option value="">{assets.length ? "Select asset…" : "Loading assets…"}</option>
+                  {assets.map(a => (
+                    <option key={a.assetId || a.id} value={a.assetId || a.id}>
+                      {a.assetTag} — {(a.type || a.assetType || "").replace(/_/g," ")}
+                    </option>
+                  ))}
+                </select>
+                {errors.assetId && <span className="err-msg">{errors.assetId}</span>}
               </div>
 
-              {/* Inspector — text input (was dropdown) */}
+              {/* Inspector — free text */}
               <div className="field">
-                <label className="label">Inspector Name <span className="req">*</span></label>
+                <label className="label">Inspector Name</label>
                 <input
-                  className={`input ${errors.inspectorName ? "input-error" : ""}`}
+                  className="input"
                   name="inspectorName" value={form.inspectorName} onChange={handleChange}
                   placeholder="Enter inspector's full name"
                 />
-                {errors.inspectorName && <span className="err-msg">{errors.inspectorName}</span>}
               </div>
 
               {/* Performed At */}
@@ -223,7 +264,7 @@ export default function InspectionPage() {
             </div>
           </div>
 
-          {/* Card 3: Evidence — no Photo URI field */}
+          {/* Card 3: Evidence */}
           <div className="card mt-16">
             <div className="card-section-label">Evidence</div>
             <div className="field">
@@ -264,7 +305,7 @@ export default function InspectionPage() {
 
           <div className="actions">
             <button type="button" className="btn-secondary"
-              onClick={() => { setForm(INITIAL); setErrors({}); setPhoto(null); setPreview(null); }}>
+              onClick={() => { setForm(INITIAL); setErrors({}); setPhoto(null); setPreview(null); setSubmitErr(""); }}>
               Reset
             </button>
             <button type="submit" className="btn-primary" disabled={loading}>
