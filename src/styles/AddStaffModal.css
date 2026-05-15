@@ -91,11 +91,21 @@
 }
 .asm-close:hover { background: #e2e8f0; color: #0f172a; }
 
+/* ── Form (flex child of dialog) ────────────────────────── */
+.asm-dialog > form {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
 /* ── Body (scrollable) ───────────────────────────────────── */
 .asm-body {
   overflow-y: auto;
   padding: 20px 24px;
   flex: 1;
+  min-height: 0;
 }
 
 /* ── Section ─────────────────────────────────────────────── */

@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import StaffLayout from "../../../components/staff/StaffLayout";
 import DispatcherService from "../../../services/DispatcherService";
-import "./CrewsPage.css";
+import "../../../styles/CrewsPage.css";
 
 const SKILL_ICONS = {
   ELECTRICIAN: "⚡", PLUMBER: "🔧", LANDSCAPER: "🌿",

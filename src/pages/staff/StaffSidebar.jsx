@@ -13,9 +13,9 @@ const roleLinks = {
   ],
   CREW: [
     { icon: "📊", label: "Dashboard",       path: "/staff/home" },
-    { icon: "✅", label: "My Tasks",        path: "/staff/tasks" },
-    { icon: "🔧", label: "Work Orders",     path: "/staff/workorders" },
-    { icon: "📷", label: "Evidence Upload", path: "/staff/evidence" },
+    { icon: "✅", label: "My Tasks",        path: "/staff/crew" },
+    { icon: "🔧", label: "Work Orders",     path: "/staff/crew/workorders" },
+    { icon: "📷", label: "Evidence Upload", path: "/staff/crew/evidence" },
     { icon: "📰", label: "News",            path: "/staff/news" },
   ],
   ASSET_MANAGER: [
@@ -25,24 +25,22 @@ const roleLinks = {
     { icon: "🛠️", label: "Maintenance", path: "/staff/maintenance" },
     { icon: "📰", label: "News",        path: "/staff/news" },
   ],
-OPERATIONS_MANAGER: [
-  { icon: "📊", label: "Dashboard",        path: "/staff/home" },
-  { icon: "🔧", label: "Work Orders",      path: "/staff/operations/workorders" },
-  { icon: "📋", label: "Create Work Log",  path: "/staff/operations/worklogs/create" },
-  { icon: "📈", label: "KPIs",             path: "/staff/kpis" },
-  { icon: "📑", label: "Reports",          path: "/staff/reports" },
-  { icon: "📰", label: "News",             path: "/staff/news" },
-],
-  FINANCE_OFFICER: [
-    { icon: "📊", label: "Dashboard",     path: "/staff/home" },
-    { icon: "💰", label: "Costs",         path: "/staff/costs" },
-    { icon: "🧰", label: "Material Usage",path: "/staff/materials" },
-    { icon: "🧾", label: "Invoices",      path: "/staff/invoices" },
-    { icon: "📰", label: "News",          path: "/staff/news" },
+  OPERATIONS_MANAGER: [
+    { icon: "📊", label: "Dashboard",       path: "/staff/home" },
+    { icon: "🔧", label: "Work Orders",     path: "/staff/operations/workorders" },
+    { icon: "📋", label: "Create Work Log", path: "/staff/operations/worklogs/create" },
+    { icon: "📈", label: "KPIs",            path: "/staff/kpis" },
+    { icon: "📑", label: "Reports",         path: "/staff/reports" },
+    { icon: "📰", label: "News",            path: "/staff/news" },
   ],
-    ADMINISTRATOR: [
+  FINANCE_OFFICER: [
+    { icon: "📊", label: "Dashboard",      path: "/staff/home" },
+    { icon: "🧰", label: "Material Usage", path: "/staff/materials" },
+    { icon: "📋", label: "Work Logs",      path: "/staff/finance/worklogs" },
+    { icon: "📰", label: "News",           path: "/staff/news" },
+  ],
+  ADMINISTRATOR: [
     { icon: "📊", label: "Dashboard",        path: "/staff/home" },
-    { icon: "🛡️", label: "Roles",            path: "/staff/roles" },
     { icon: "📋", label: "Service Requests", path: "/staff/requests" },
     { icon: "🔧", label: "Work Orders",      path: "/staff/workorders" },
     { icon: "🏗️", label: "Assets",           path: "/staff/assets" },
@@ -50,10 +48,8 @@ OPERATIONS_MANAGER: [
     { icon: "📑", label: "Reports",          path: "/staff/reports" },
     { icon: "📰", label: "News",             path: "/staff/news" },
   ],
-
   COMPLIANCE_OFFICER: [
     { icon: "📊", label: "Dashboard",   path: "/staff/home" },
-    { icon: "📜", label: "Audit Logs",  path: "/staff/audit" },
     { icon: "🔍", label: "Inspections", path: "/staff/inspections" },
     { icon: "📑", label: "Reports",     path: "/staff/reports" },
     { icon: "📰", label: "News",        path: "/staff/news" },

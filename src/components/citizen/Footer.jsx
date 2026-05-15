@@ -1,6 +1,24 @@
 // components/citizen/CitizenFooter.jsx
 import { useNavigate } from "react-router-dom";
-import "./Footer.css";
+import "../../styles/Footer.css";
+
+function CivicIcon() {
+  return (
+    <svg className="cfooter-civic-icon" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x="15.5" y="1" width="1.5" height="6" rx="0.5" fill="currentColor" opacity="0.9"/>
+      <path d="M17 1.5 L22 3.5 L17 5.5 Z" fill="currentColor"/>
+      <path d="M5 12 L16 6.5 L27 12 Z" fill="currentColor"/>
+      <rect x="4" y="12" width="24" height="2.5" rx="0.5" fill="currentColor"/>
+      <rect x="6"  y="14.5" width="3" height="11" rx="1" fill="currentColor"/>
+      <rect x="11" y="14.5" width="3" height="11" rx="1" fill="currentColor"/>
+      <rect x="18" y="14.5" width="3" height="11" rx="1" fill="currentColor"/>
+      <rect x="23" y="14.5" width="3" height="11" rx="1" fill="currentColor"/>
+      <rect x="13.5" y="20" width="5" height="5.5" rx="1.5" fill="currentColor" opacity="0.6"/>
+      <rect x="3"  y="25.5" width="26" height="2"   rx="0.5" fill="currentColor"/>
+      <rect x="1"  y="27.5" width="30" height="1.5" rx="0.5" fill="currentColor" opacity="0.7"/>
+    </svg>
+  );
+}
 
 function CitizenFooter() {
   const navigate = useNavigate();
@@ -14,7 +32,7 @@ function CitizenFooter() {
 
           <div className="cfooter-brand">
             <div className="cfooter-logo">
-              <span className="cfooter-logo-icon">🏙️</span>
+              <CivicIcon />
               <span className="cfooter-logo-text">CityWorks</span>
             </div>
             <p className="cfooter-tagline">
@@ -35,18 +53,9 @@ function CitizenFooter() {
             <button className="cfooter-link" onClick={() => navigate("/citizen/history")}>
               Request History
             </button>
-            <button className="cfooter-link" onClick={() => navigate("/citizen/dashboard")}>
+            <button className="cfooter-link" onClick={() => navigate("/citizen/home")}>
               My Dashboard
             </button>
-          </div>
-
-          {/* Support */}
-          <div className="cfooter-col">
-            <h4 className="cfooter-col-title">Support</h4>
-            <button className="cfooter-link">Help Center</button>
-            <button className="cfooter-link">Contact Us</button>
-            <button className="cfooter-link">Report a Bug</button>
-            <button className="cfooter-link">Accessibility</button>
           </div>
 
           {/* Contact */}

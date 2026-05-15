@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from "react";
 import StaffLayout from "../../../components/staff/StaffLayout";
 import DispatcherService from "../../../services/DispatcherService";
 import CreateWorkOrderModal from "./CreateWorkOrderModal";
-import "./ServiceRequestPage.css";
+import "../../../styles/ServiceRequestPage.css";
 
 const STATUS_CFG = {
   PENDING:     { label: "Pending",     bg: "#fef3c7", color: "#92400e" },

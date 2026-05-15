@@ -1,49 +1,22 @@
-// maintenanceService.js
-const BASE_URL = "http://localhost:8080/api";
+// services/Maintenanceservice.js
+import api from "./api";
 
-export const maintenanceService = {
-  /**
-   * Schedule a maintenance task
-   * POST /api/maintenance-tasks
-   * @param {Object} data - CreateMaintenanceTaskRequest DTO
-   *   { assetId, description, scheduledAt, status, nextDueDate }
-   *   scheduledAt: ISO datetime string (future)
-   *   nextDueDate: ISO date string (today or future)
-   */
-  async create(data) {
-    const res = await fetch(`${BASE_URL}/maintenance-tasks`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data),
-    });
-    if (!res.ok) {
-      const err = await res.json().catch(() => ({}));
-      throw new Error(err.message || "Failed to create maintenance task");
-    }
-    return res.json();
-  },
+const MaintenanceService = {
+  /** POST /api/maintenancetask */
+  create:  (data)      => api.post("/api/maintenancetask", data),
 
-  /**
-   * Get all maintenance tasks
-   * GET /api/maintenance-tasks
-   */
-  async getAll() {
-    const res = await fetch(`${BASE_URL}/maintenance-tasks`);
-    if (!res.ok) throw new Error("Failed to fetch tasks");
-    return res.json();
-  },
+  /** GET /api/maintenancetask */
+  getAll:  ()          => api.get("/api/maintenancetask"),
 
-  /**
-   * Update a task status
-   * PATCH /api/maintenance-tasks/:id/status
-   */
-  async updateStatus(id, status) {
-    const res = await fetch(`${BASE_URL}/maintenance-tasks/${id}/status`, {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ status }),
-    });
-    if (!res.ok) throw new Error("Failed to update status");
-    return res.json();
-  },
+  /** GET /api/maintenancetask/:id */
+  getById: (id)        => api.get(`/api/maintenancetask/${id}`),
+
+  /** PUT /api/maintenancetask/:id */
+  update:  (id, data)  => api.put(`/api/maintenancetask/${id}`, data),
+
+  /** DELETE /api/maintenancetask/:id */
+  remove:  (id)        => api.delete(`/api/maintenancetask/${id}`),
 };
+
+export default MaintenanceService;
+export const maintenanceService = MaintenanceService;

@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import DispatcherService from "../../../services/DispatcherService";
-import "./CreateWorkOrderModal.css";
+import "../../../styles/CreateWorkOrderModal.css";
 
 const PRIORITIES = ["LOW", "MEDIUM", "HIGH", "CRITICAL"];
 const PRIORITY_LABELS = { LOW: "Low", MEDIUM: "Medium", HIGH: "High", CRITICAL: "Critical" };

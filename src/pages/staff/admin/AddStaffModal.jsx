@@ -1,6 +1,6 @@
 import { useState } from "react";
 import StaffService from "../../../services/StaffService";
-import "./AddStaffModal.css";
+import "../../../styles/AddStaffModal.css";
 
 const ROLES = [
   "DISPATCHER", "CREW", "ASSET_MANAGER",
@@ -136,8 +136,8 @@ export default function AddStaffModal({ onClose, onSuccess }) {
   const f = { form, errors, set };
 
   return (
-    <div className="asm-overlay" onClick={e => e.target === e.currentTarget && onClose()}>
-      <div className="asm-dialog">
+    <div className="asm-overlay" onClick={onClose}>
+      <div className="asm-dialog" onClick={e => e.stopPropagation()}>
 
         <div className="asm-header">
           <div className="asm-header-left">
