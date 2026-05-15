@@ -1,82 +1,273 @@
-.srp-root { display: flex; flex-direction: column; gap: 20px; }
+/* ══════════════════════════════════════════════════
+   ServiceRequestsPage — Dispatcher triage console
+══════════════════════════════════════════════════ */
+
+/* ── Root ── */
+.srp-root {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 4px 0;
+}
 
 /* ── Header ── */
-.srp-header { display: flex; align-items: center; justify-content: space-between; }
-.srp-title  { font-size: 22px; font-weight: 700; color: #0f172a; margin: 0; }
-.srp-subtitle { font-size: 13px; color: #64748b; margin: 4px 0 0; }
-.srp-btn-refresh {
-  padding: 8px 16px; border: 1.5px solid #e2e8f0; border-radius: 8px;
-  background: #fff; color: #374151; font-size: 13px; font-weight: 600; cursor: pointer;
+.srp-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
 }
-.srp-btn-refresh:hover { background: #f8fafc; }
+.srp-title {
+  font-size: 22px;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0;
+}
+.srp-subtitle {
+  font-size: 13px;
+  color: #64748b;
+  margin: 3px 0 0;
+}
+.srp-btn-refresh {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 8px;
+  background: #fff;
+  color: #374151;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.15s;
+}
+.srp-btn-refresh:hover { background: #f8fafc; border-color: #cbd5e1; }
 
 /* ── Toast ── */
-.srp-toast { padding: 10px 16px; border-radius: 8px; font-size: 13px; font-weight: 500; }
+.srp-toast {
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 500;
+}
 .srp-toast--success { background: #f0fdf4; color: #16a34a; border: 1px solid #bbf7d0; }
 .srp-toast--error   { background: #fef2f2; color: #dc2626; border: 1px solid #fecaca; }
 
-/* ── Tabs ── */
-.srp-tabs { display: flex; gap: 4px; border-bottom: 2px solid #e2e8f0; }
+/* ── Tabs (Pending / Validated) ── */
+.srp-tabs {
+  display: flex;
+  gap: 4px;
+  border-bottom: 2px solid #e2e8f0;
+  padding-bottom: 0;
+}
 .srp-tab {
-  padding: 10px 18px; border: none; background: none; cursor: pointer;
-  font-size: 13px; font-weight: 600; color: #64748b;
-  border-bottom: 2px solid transparent; margin-bottom: -2px;
-  display: flex; align-items: center; gap: 6px; transition: color 0.15s;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 10px 20px;
+  border: none;
+  background: none;
+  font-size: 14px;
+  font-weight: 600;
+  color: #64748b;
+  cursor: pointer;
+  border-bottom: 2.5px solid transparent;
+  margin-bottom: -2px;
+  transition: all 0.15s;
+  border-radius: 0;
 }
-.srp-tab:hover  { color: #1e40af; }
-.srp-tab.active { color: #1e40af; border-bottom-color: #1e40af; }
+.srp-tab:hover           { color: #1e40af; background: #f8fafc; }
+.srp-tab.active          { color: #1e40af; border-bottom-color: #1e40af; }
 .srp-tab-count {
-  background: #1e40af; color: #fff; font-size: 11px;
-  padding: 1px 7px; border-radius: 20px; font-weight: 700;
+  background: #dbeafe;
+  color: #1e40af;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 20px;
+  line-height: 1.4;
+}
+.srp-tab.active .srp-tab-count { background: #1e40af; color: #fff; }
+
+/* ── Card wrapper ── */
+.srp-card {
+  background: #fff;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  overflow: hidden;
 }
 
-/* ── Card ── */
-.srp-card { background: #fff; border-radius: 12px; border: 1px solid #e2e8f0; overflow: hidden; }
-
-/* ── Empty / Loading ── */
-.srp-empty { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; padding: 60px 20px; color: #94a3b8; font-size: 14px; }
-.srp-spinner { width: 28px; height: 28px; border: 3px solid #e2e8f0; border-top-color: #3b82f6; border-radius: 50%; animation: srp-spin 0.7s linear infinite; }
+/* ── Empty / loading ── */
+.srp-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 64px 20px;
+  color: #94a3b8;
+  font-size: 14px;
+}
+.srp-spinner {
+  width: 28px;
+  height: 28px;
+  border: 3px solid #e2e8f0;
+  border-top-color: #3b82f6;
+  border-radius: 50%;
+  animation: srp-spin 0.7s linear infinite;
+}
 @keyframes srp-spin { to { transform: rotate(360deg); } }
 
 /* ── Table ── */
-.srp-table-wrap { overflow-x: auto; }
-.srp-table { width: 100%; border-collapse: collapse; font-size: 13px; }
-.srp-table thead tr { background: #f8fafc; }
-.srp-table th { padding: 10px 14px; text-align: left; font-size: 11px; font-weight: 700; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.05em; white-space: nowrap; }
-.srp-table td { padding: 12px 14px; border-top: 1px solid #f1f5f9; vertical-align: middle; }
-.srp-table tbody tr:hover { background: #fafafa; }
+.srp-table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
 
-.srp-id   { font-weight: 700; color: #0f172a; }
-.srp-tag  { background: #f1f5f9; color: #475569; padding: 2px 8px; border-radius: 6px; font-size: 12px; font-weight: 600; }
-.srp-type { color: #475569; white-space: nowrap; }
-.srp-desc { color: #374151; max-width: 280px; }
-.srp-date { color: #64748b; white-space: nowrap; font-size: 12px; }
-.srp-actions { white-space: nowrap; display: flex; gap: 6px; align-items: center; }
-
-/* ── Action Buttons ── */
-.srp-btn {
-  padding: 5px 12px; border: none; border-radius: 6px;
-  font-size: 12px; font-weight: 600; cursor: pointer; transition: background 0.15s;
+.srp-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  min-width: 700px;
 }
-.srp-btn:disabled { opacity: 0.5; cursor: not-allowed; }
-.srp-btn--validate  { background: #d1fae5; color: #065f46; }
-.srp-btn--validate:hover { background: #a7f3d0; }
-.srp-btn--reject    { background: #fee2e2; color: #991b1b; }
-.srp-btn--reject:hover { background: #fecaca; }
-.srp-btn--workorder { background: #dbeafe; color: #1e40af; }
-.srp-btn--workorder:hover { background: #bfdbfe; }
+.srp-table thead tr {
+  background: #f8fafc;
+  border-bottom: 2px solid #e2e8f0;
+}
+.srp-table th {
+  padding: 11px 16px;
+  text-align: left;
+  font-size: 11px;
+  font-weight: 700;
+  color: #94a3b8;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+}
+.srp-table td {
+  padding: 13px 16px;
+  border-top: 1px solid #f1f5f9;
+  vertical-align: middle;
+}
+.srp-table tbody tr { transition: background 0.1s; }
+.srp-table tbody tr:hover { background: #fafbfc; }
+
+/* ── Cell helpers ── */
+.srp-id {
+  font-weight: 700;
+  color: #1e40af;
+  white-space: nowrap;
+  font-size: 13px;
+}
+
+.srp-tag {
+  display: inline-block;
+  background: #f1f5f9;
+  color: #475569;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  padding: 2px 8px;
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.srp-type {
+  color: #374151;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.srp-desc {
+  color: #374151;
+  max-width: 240px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.srp-date {
+  color: #64748b;
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+/* ── Action buttons cell ── */
+.srp-actions {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  white-space: nowrap;
+}
+
+/* ── Base button ── */
+.srp-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 6px 13px;
+  border-radius: 7px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1.5px solid transparent;
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+
+/* Validate */
+.srp-btn--validate {
+  background: #f0fdf4;
+  color: #15803d;
+  border-color: #bbf7d0;
+}
+.srp-btn--validate:hover:not(:disabled) {
+  background: #16a34a;
+  color: #fff;
+  border-color: #16a34a;
+}
+
+/* Reject */
+.srp-btn--reject {
+  background: #fef2f2;
+  color: #dc2626;
+  border-color: #fecaca;
+}
+.srp-btn--reject:hover:not(:disabled) {
+  background: #dc2626;
+  color: #fff;
+  border-color: #dc2626;
+}
+
+/* Create Work Order */
+.srp-btn--workorder {
+  background: #eff6ff;
+  color: #1d4ed8;
+  border-color: #bfdbfe;
+}
+.srp-btn--workorder:hover:not(:disabled) {
+  background: #1d4ed8;
+  color: #fff;
+  border-color: #1d4ed8;
+}
+
+/* Disabled state */
+.srp-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
 
 /* ── Work-order-done badge ── */
 .srp-badge-done {
   display: inline-flex;
   align-items: center;
   gap: 5px;
-  padding: 4px 12px;
+  padding: 5px 12px;
   border-radius: 20px;
-  background: #d1fae5;
-  color: #065f46;
+  background: #f0fdf4;
+  color: #15803d;
+  border: 1px solid #bbf7d0;
   font-size: 12px;
   font-weight: 700;
-  border: 1.5px solid #6ee7b7;
   white-space: nowrap;
 }

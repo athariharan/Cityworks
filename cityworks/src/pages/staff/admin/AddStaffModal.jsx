@@ -136,8 +136,8 @@ export default function AddStaffModal({ onClose, onSuccess }) {
   const f = { form, errors, set };
 
   return (
-    <div className="asm-overlay" onClick={e => e.target === e.currentTarget && onClose()}>
-      <div className="asm-dialog">
+    <div className="asm-overlay" onClick={onClose}>
+      <div className="asm-dialog" onClick={e => e.stopPropagation()}>
 
         <div className="asm-header">
           <div className="asm-header-left">

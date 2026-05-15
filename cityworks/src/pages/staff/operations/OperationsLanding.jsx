@@ -9,7 +9,7 @@ import "../../../styles/OperationsLanding.css";
 
 export default function OperationsLanding() {
   const navigate = useNavigate();
-  const [stats,   setStats]   = useState({ orders: "—", active: "—", logs: "—", kpis: "—" });
+  const [stats,   setStats]   = useState({ orders: "—", active: "—", logs: "—", kpis: "—", completed: "—" });
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -21,8 +21,9 @@ export default function OperationsLanding() {
       const orders = wo.status === "fulfilled" ? (wo.value.data?.data ?? []) : [];
       const logs   = wl.status === "fulfilled" ? (wl.value.data?.data ?? []) : [];
       const kpis   = kp.status === "fulfilled" ? (kp.value.data?.data ?? []) : [];
-      const active = orders.filter(o => o.status === "NOT_STARTED" || o.status === "IN_PROGRESS").length;
-      setStats({ orders: orders.length, active, logs: logs.length, kpis: kpis.length });
+      const active    = orders.filter(o => o.status === "NOT_STARTED" || o.status === "IN_PROGRESS").length;
+      const completed = orders.filter(o => o.status === "COMPLETED").length;
+      setStats({ orders: orders.length, active, logs: logs.length, kpis: kpis.length, completed });
       setLoading(false);
     });
   }, []);
@@ -86,6 +87,26 @@ export default function OperationsLanding() {
       lightBg:     "#f5f3ff",
       borderColor: "#ddd6fe",
       btnLabel:    "Manage KPIs",
+    },
+    {
+      key:         "report",
+      path:        "/staff/reports",
+      icon: (
+        <svg width="22" height="22" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+          <path d="M9 17H7A5 5 0 0 1 7 7h2"/>
+          <path d="M15 7h2a5 5 0 0 1 0 10h-2"/>
+          <line x1="8" y1="12" x2="16" y2="12"/>
+        </svg>
+      ),
+      label:       "Completion Report",
+      tagline:     "End-to-End Lifecycle View",
+      description: "Full audit trail of every completed task — from citizen submission through validation, work order creation, field activity, to final sign-off.",
+      stat:        stats.completed,
+      statLabel:   "Completed Tasks",
+      color:       "#059669",
+      lightBg:     "#f0fdf4",
+      borderColor: "#a7f3d0",
+      btnLabel:    "View Report",
     },
   ];
 

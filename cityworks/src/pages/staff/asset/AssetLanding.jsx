@@ -1,7 +1,9 @@
 // pages/staff/asset/AssetLanding.jsx
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAssets } from "../../../context/AssetContext";
+import { assetService }        from "../../../services/Assetservice";
+import { inspectionService }  from "../../../services/Inspectionservice";
+import { maintenanceService } from "../../../services/MaintenanceService";
 import "../../../styles/AssetLanding.css";
 import StaffLayout from "../../../components/staff/StaffLayout";
 
@@ -20,31 +22,46 @@ const ACTIVITY_ICONS = {
   maintenance: { bg: "#fee2e2", color: "#7c2d12", symbol: "🛠" },
 };
 
+function unwrap(res) {
+  // res is an Axios response: res.data is the parsed body
+  // body may be the array itself, or ApiResponse { data: [...] }
+  const raw = res?.data ?? res;
+  if (Array.isArray(raw))              return raw;
+  if (Array.isArray(raw?.data))        return raw.data;
+  if (Array.isArray(raw?.data?.data))  return raw.data.data;
+  return [];
+}
+
 export default function AssetLanding() {
   const navigate = useNavigate();
-  const { assets, inspections, maintenance } = useAssets();
+  const [assets,      setAssets]      = useState([]);
+  const [inspections, setInspections] = useState([]);
+  const [maintenance, setMaintenance] = useState([]);
   const [tip] = useState(() => TIPS[Math.floor(Math.random() * TIPS.length)]);
 
+  useEffect(() => {
+    Promise.allSettled([
+      assetService.getAll(),
+      inspectionService.getAll(),
+      maintenanceService.getAll(),
+    ]).then(([aRes, iRes, mRes]) => {
+      if (aRes.status === "fulfilled") setAssets(unwrap(aRes.value));
+      if (iRes.status === "fulfilled") setInspections(unwrap(iRes.value));
+      if (mRes.status === "fulfilled") setMaintenance(unwrap(mRes.value));
+    });
+  }, []);
+
+  const toMs = (v) => v ? new Date(v).getTime() : 0;
+
   const recentActivity = [
-    ...assets.map((a)      => ({ type:"asset",       label:`Asset registered: ${a.assetTag}`,        sub: a.type,            time: a.id })),
-    ...inspections.map((i) => ({ type:"inspection",  label:`Inspection logged: ${i.assetTag || "—"}`, sub: i.conditionRating, time: i.id })),
-    ...maintenance.map((m) => ({ type:"maintenance", label:`Task scheduled: ${m.assetTag || "—"}`,    sub: m.status,          time: m.id })),
+    ...assets.map((a)      => ({ type:"asset",       label:`Asset registered: ${a.assetTag || "—"}`,        sub: (a.type || a.assetType || "").replace(/_/g," "), time: toMs(a.createdAt) })),
+    ...inspections.map((i) => ({ type:"inspection",  label:`Inspection logged: Asset #${i.assetId || "—"}`, sub: i.conditionRating, time: toMs(i.performedAt) })),
+    ...maintenance.map((m) => ({ type:"maintenance", label:`Task scheduled: Asset #${m.assetId || "—"}`,    sub: (m.status || "").replace(/_/g," "), time: toMs(m.scheduledAt) })),
   ]
     .sort((a, b) => b.time - a.time)
     .slice(0, 6);
 
-  const overdue = maintenance.filter(m => m.status === "Overdue").length;
-
-  const handleExport = (type, data) => {
-    if (!data.length) { alert("No data to export yet."); return; }
-    const keys = Object.keys(data[0]).filter(k => k !== "id");
-    const csv  = [keys.join(","), ...data.map(r => keys.map(k => `"${r[k] ?? ""}"`).join(","))].join("\n");
-    const blob = new Blob([csv], { type: "text/csv" });
-    const url  = URL.createObjectURL(blob);
-    const a    = document.createElement("a");
-    a.href = url; a.download = `${type}.csv`; a.click();
-    URL.revokeObjectURL(url);
-  };
+  const overdue = maintenance.filter(m => m.status === "Overdue" || m.status === "OVERDUE").length;
 
   const MODULES = [
     {
@@ -66,7 +83,6 @@ export default function AssetLanding() {
       primaryBtn: { label: "+ Add Asset", action: () => navigate("/staff/assets/registry") },
       otherBtns: [
         { label: "View All", action: () => navigate("/staff/assets/registry/list") },
-        { label: "Export",   action: () => handleExport("assets", assets) },
       ],
     },
     {
@@ -87,7 +103,6 @@ export default function AssetLanding() {
       gradient: "linear-gradient(135deg, #1a4971 0%, #1d6096 100%)",
       primaryBtn: { label: "+ New Inspection", action: () => navigate("/staff/assets/inspections") },
       otherBtns: [
-        // "Reports" button removed as requested
         { label: "View Records", action: () => navigate("/staff/assets/inspections/list") },
       ],
     },
@@ -111,7 +126,6 @@ export default function AssetLanding() {
       gradient: "linear-gradient(135deg, #7c2d12 0%, #b45309 100%)",
       primaryBtn: { label: "+ Schedule Task", action: () => navigate("/staff/assets/maintenance") },
       otherBtns: [
-        // "Overdue" button removed as requested
         { label: "View Calendar", action: () => navigate("/staff/assets/maintenance/list") },
       ],
     },
@@ -148,8 +162,6 @@ export default function AssetLanding() {
             </div>
           </div>
         </div>
-
-        
 
         {/* Module Cards */}
         <div className="al-cards-grid">

@@ -1,60 +1,22 @@
-// assetService.js
-// Replace BASE_URL with your Spring Boot backend URL
-const BASE_URL = "http://localhost:8080/api";
+// services/Assetservice.js
+import api from "./api";
 
-export const assetService = {
-  /**
-   * Create a new asset
-   * POST /api/assets
-   * @param {Object} data - AssetRequest DTO fields
-   */
-  async create(data) {
-    const res = await fetch(`${BASE_URL}/assets`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data),
-    });
-    if (!res.ok) {
-      const err = await res.json().catch(() => ({}));
-      throw new Error(err.message || "Failed to create asset");
-    }
-    return res.json();
-  },
+const AssetService = {
+  /** POST /api/asset */
+  create:  (data) => api.post("/api/asset", data),
 
-  /**
-   * Get all assets (for dropdowns)
-   * GET /api/assets
-   */
-  async getAll() {
-    const res = await fetch(`${BASE_URL}/assets`);
-    if (!res.ok) throw new Error("Failed to fetch assets");
-    return res.json();
-  },
+  /** GET /api/asset */
+  getAll:  () => api.get("/api/asset"),
 
-  /**
-   * Get a single asset by ID
-   * GET /api/assets/:id
-   */
-  async getById(id) {
-    const res = await fetch(`${BASE_URL}/assets/${id}`);
-    if (!res.ok) throw new Error("Asset not found");
-    return res.json();
-  },
+  /** GET /api/asset/:id */
+  getById: (id) => api.get(`/api/asset/${id}`),
 
-  /**
-   * Update an existing asset
-   * PUT /api/assets/:id
-   */
-  async update(id, data) {
-    const res = await fetch(`${BASE_URL}/assets/${id}`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data),
-    });
-    if (!res.ok) {
-      const err = await res.json().catch(() => ({}));
-      throw new Error(err.message || "Failed to update asset");
-    }
-    return res.json();
-  },
+  /** PUT /api/asset/:id */
+  update:  (id, data) => api.put(`/api/asset/${id}`, data),
+
+  /** DELETE /api/asset/:id */
+  remove:  (id) => api.delete(`/api/asset/${id}`),
 };
+
+export default AssetService;
+export const assetService = AssetService;

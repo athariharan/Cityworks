@@ -1,19 +1,19 @@
 // pages/staff/asset/MaintenancePage.jsx
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAssets } from "../../../context/AssetContext";
+import { maintenanceService } from "../../../services/MaintenanceService";
+import { assetService }       from "../../../services/Assetservice";
 import "../../../styles/assetmanager.css";
 import StaffLayout from "../../../components/staff/StaffLayout";
 
+// Values must exactly match the backend TaskStatus enum: SCHEDULED, IN_PROGRESS, COMPLETED
 const TASK_STATUSES = [
-  { value:"Scheduled",   label:"Scheduled",   color:"#1b6e3a", bg:"#dbeafe", dot:"#3fb950" },
-  { value:"In_Progress", label:"In Progress",  color:"#7d5a00", bg:"#fff3cc", dot:"#d29922" },
-  { value:"Completed",   label:"Completed",    color:"#1a7f37", bg:"#e0f7e4", dot:"#2da44e" },
-  { value:"Overdue",     label:"Overdue",      color:"#7f1d1d", bg:"#ffe0e0", dot:"#dc2626" },
-  { value:"Cancelled",   label:"Cancelled",    color:"#555",    bg:"#f0f0f0", dot:"#888"    },
+  { value:"SCHEDULED",   label:"Scheduled",   color:"#1b6e3a", bg:"#dbeafe", dot:"#3fb950" },
+  { value:"IN_PROGRESS", label:"In Progress", color:"#7d5a00", bg:"#fff3cc", dot:"#d29922" },
+  { value:"COMPLETED",   label:"Completed",   color:"#1a7f37", bg:"#e0f7e4", dot:"#2da44e" },
 ];
 
-const INITIAL = { assetTag:"", description:"", scheduledAt:"", status:"", nextDueDate:"" };
+const INITIAL = { assetId:"", description:"", scheduledAt:"", status:"", nextDueDate:"" };
 
 function pad(n) { return String(n).padStart(2,"0"); }
 function minDatetime() {
@@ -23,11 +23,26 @@ function minDatetime() {
 
 export default function MaintenancePage() {
   const navigate = useNavigate();
-  const { addMaintenance } = useAssets();
-  const [form,    setForm]    = useState(INITIAL);
-  const [errors,  setErrors]  = useState({});
-  const [loading, setLoading] = useState(false);
-  const [success, setSuccess] = useState(false);
+
+  const [form,      setForm]      = useState(INITIAL);
+  const [errors,    setErrors]    = useState({});
+  const [loading,   setLoading]   = useState(false);
+  const [success,   setSuccess]   = useState(false);
+  const [submitErr, setSubmitErr] = useState("");
+  const [assets,    setAssets]    = useState([]);
+
+  // Load asset list on mount
+  useEffect(() => {
+    assetService.getAll()
+      .then(res => {
+        const body = res?.data ?? res;
+        const list = Array.isArray(body)             ? body
+          : Array.isArray(body?.data)                ? body.data
+          : Array.isArray(body?.data?.data)          ? body.data.data : [];
+        setAssets(list);
+      })
+      .catch(() => {}); // silent — user can still type assetId manually
+  }, []);
 
   const selectedStatus = TASK_STATUSES.find(s => s.value === form.status);
 
@@ -39,7 +54,7 @@ export default function MaintenancePage() {
 
   const validate = () => {
     const e = {};
-    if (!form.assetTag || !form.assetTag.trim()) e.assetTag = "Asset tag is required";
+    if (!form.assetId)    e.assetId    = "Please select an asset";
     if (!form.scheduledAt) e.scheduledAt = "Scheduled date/time is required";
     else if (new Date(form.scheduledAt) <= new Date()) e.scheduledAt = "Must be a future date and time";
     if (!form.status) e.status = "Status is required";
@@ -52,16 +67,25 @@ export default function MaintenancePage() {
     e.preventDefault();
     const errs = validate();
     if (Object.keys(errs).length) { setErrors(errs); return; }
+
     setLoading(true);
-    await new Promise(r => setTimeout(r, 1000));
-    addMaintenance({
-      ...form,
-      statusInfo:  TASK_STATUSES.find(s => s.value === form.status),
-      submittedAt: new Date().toLocaleString("en-IN"),
-    });
-    setLoading(false); setSuccess(true);
-    setForm(INITIAL);
-    setTimeout(() => setSuccess(false), 4000);
+    setSubmitErr("");
+    try {
+      await maintenanceService.create({
+        assetId:     Number(form.assetId),
+        description: form.description || null,
+        scheduledAt: form.scheduledAt,
+        status:      form.status,
+        nextDueDate: form.nextDueDate || null,
+      });
+      setSuccess(true);
+      setForm(INITIAL);
+      setTimeout(() => setSuccess(false), 4000);
+    } catch (err) {
+      setSubmitErr(err.message || "Failed to schedule task. Please try again.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -98,10 +122,19 @@ export default function MaintenancePage() {
             <svg width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
               <circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/>
             </svg>
-            Task scheduled!
+            Task scheduled and saved to database!
             <span className="alert-link" onClick={() => navigate("/staff/assets/maintenance/list")}>
               View All Tasks →
             </span>
+          </div>
+        )}
+
+        {submitErr && (
+          <div className="alert alert-error">
+            <svg width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+              <circle cx="12" cy="12" r="10"/><path d="M12 8v4m0 4h.01"/>
+            </svg>
+            {submitErr}
           </div>
         )}
 
@@ -110,14 +143,21 @@ export default function MaintenancePage() {
             <div className="card-section-label">Task Details</div>
             <div className="form-grid-2">
 
+              {/* Asset dropdown — real data from API */}
               <div className="field">
-                <label className="label">Asset Tag <span className="req">*</span></label>
-                <input
-                  className={`input ${errors.assetTag ? "input-error" : ""}`}
-                  name="assetTag" value={form.assetTag} onChange={handleChange}
-                  placeholder="e.g. RD-2024-001"
-                />
-                {errors.assetTag && <span className="err-msg">{errors.assetTag}</span>}
+                <label className="label">Asset <span className="req">*</span></label>
+                <select
+                  className={`input ${errors.assetId ? "input-error" : ""}`}
+                  name="assetId" value={form.assetId} onChange={handleChange}
+                >
+                  <option value="">{assets.length ? "Select asset…" : "Loading assets…"}</option>
+                  {assets.map(a => (
+                    <option key={a.assetId || a.id} value={a.assetId || a.id}>
+                      {a.assetTag} — {(a.type || a.assetType || "").replace(/_/g," ")}
+                    </option>
+                  ))}
+                </select>
+                {errors.assetId && <span className="err-msg">{errors.assetId}</span>}
               </div>
 
               <div className="field">
@@ -179,7 +219,7 @@ export default function MaintenancePage() {
 
           <div className="actions">
             <button type="button" className="btn-secondary"
-              onClick={() => { setForm(INITIAL); setErrors({}); }}>
+              onClick={() => { setForm(INITIAL); setErrors({}); setSubmitErr(""); }}>
               Reset
             </button>
             <button type="submit" className="btn-primary" disabled={loading}>

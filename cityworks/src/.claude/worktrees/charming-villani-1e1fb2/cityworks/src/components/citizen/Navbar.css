@@ -1,0 +1,299 @@
+/* components/citizen/CitizenNavbar.css */
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Lato:wght@300;400;600;700&display=swap');
+ 
+.cnav {
+  background: #ffffff;
+  border-bottom: 1px solid #e5ede9;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 12px rgba(22, 163, 74, 0.07);
+}
+ 
+.cnav-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+ 
+/* ── Logo ── */
+.cnav-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+ 
+.cnav-logo-icon {
+  font-size: 1.5rem;
+}
+ 
+.cnav-logo-text {
+  font-family: 'Nunito', sans-serif;
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: #15803d;
+  letter-spacing: -0.3px;
+}
+ 
+/* ── Nav Links ── */
+.cnav-links {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  flex: 1;
+}
+ 
+.cnav-link {
+  padding: 8px 16px;
+  border: none;
+  background: transparent;
+  font-family: 'Lato', sans-serif;
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: #6b7280;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: all 0.18s;
+  white-space: nowrap;
+}
+ 
+.cnav-link:hover {
+  background: #f0fdf4;
+  color: #16a34a;
+}
+ 
+.cnav-link.active {
+  background: #f0fdf4;
+  color: #16a34a;
+}
+ 
+/* ── Right Side ── */
+.cnav-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-left: auto;
+}
+ 
+/* ── Profile Wrapper (positions dropdown) ── */
+.cnav-profile-wrapper {
+  position: relative;
+}
+ 
+/* ── Profile Button ── */
+.cnav-profile {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  padding: 6px 10px;
+  border-radius: 10px;
+  transition: background 0.18s;
+  background: none;
+  border: none;
+  outline: none;
+  box-shadow: none;
+}
+ 
+.cnav-profile:hover {
+  background: #f0fdf4;
+}
+ 
+/* ── Avatar ── */
+.cnav-avatar {
+  width: 34px;
+  height: 34px;
+  background: linear-gradient(135deg, #16a34a, #15803d);
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Nunito', sans-serif;
+  font-weight: 800;
+  font-size: 0.8rem;
+  flex-shrink: 0;
+  border: none;
+  outline: none;
+  box-shadow: none;
+}
+ 
+.cnav-username {
+  font-family: 'Lato', sans-serif;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: #374151;
+  white-space: nowrap;
+}
+ 
+/* ── Chevron ── */
+.cnav-chevron {
+  color: #9ca3af;
+  transition: transform 0.2s ease;
+  flex-shrink: 0;
+}
+ 
+.cnav-chevron.open {
+  transform: rotate(180deg);
+}
+ 
+/* ── Dropdown ── */
+.cnav-dropdown {
+  position: absolute;
+  top: calc(100% + 6px);
+  right: 0;
+  background: #ffffff;
+  border: none;
+  border-radius: 10px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.09);
+  min-width: 155px;
+  z-index: 200;
+  overflow: hidden;
+  animation: dropdownFadeIn 0.15s ease;
+}
+ 
+@keyframes dropdownFadeIn {
+  from { opacity: 0; transform: translateY(-5px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+ 
+.cnav-dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 10px 16px;
+  background: none;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  font-family: 'Lato', sans-serif;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: #374151;
+  text-align: left;
+  transition: background 0.12s ease;
+  box-shadow: none;
+}
+ 
+.cnav-dropdown-item:hover {
+  background: #f0fdf4;
+  color: #16a34a;
+}
+ 
+.cnav-dropdown-item svg {
+  flex-shrink: 0;
+  color: #9ca3af;
+  transition: color 0.12s ease;
+}
+ 
+.cnav-dropdown-item:hover svg {
+  color: #16a34a;
+}
+ 
+.cnav-dropdown-signout {
+  color: #dc2626;
+}
+ 
+.cnav-dropdown-signout:hover {
+  background: #fef2f2;
+  color: #dc2626;
+}
+ 
+.cnav-dropdown-signout:hover svg {
+  color: #dc2626;
+}
+ 
+.cnav-dropdown-divider {
+  height: 1px;
+  background: #f3f4f6;
+  margin: 0;
+}
+ 
+/* ── Hamburger ── */
+.cnav-hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 8px;
+  transition: background 0.18s;
+}
+ 
+.cnav-hamburger:hover {
+  background: #f0fdf4;
+}
+ 
+.cnav-hamburger span {
+  display: block;
+  width: 22px;
+  height: 2px;
+  background: #374151;
+  border-radius: 2px;
+  transition: all 0.25s;
+}
+ 
+.cnav-hamburger.open span:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+ 
+.cnav-hamburger.open span:nth-child(2) {
+  opacity: 0;
+}
+ 
+.cnav-hamburger.open span:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+ 
+/* ── Responsive ── */
+@media (max-width: 768px) {
+  .cnav-username {
+    display: none;
+  }
+ 
+  .cnav-chevron {
+    display: none;
+  }
+ 
+  .cnav-hamburger {
+    display: flex;
+  }
+ 
+  .cnav-links {
+    display: none;
+    position: absolute;
+    top: 64px;
+    left: 0;
+    right: 0;
+    background: white;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 12px 24px 16px;
+    border-bottom: 1px solid #e5ede9;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+    gap: 4px;
+  }
+ 
+  .cnav-links.open {
+    display: flex;
+  }
+ 
+  .cnav-link {
+    width: 100%;
+    text-align: left;
+  }
+ 
+  .cnav-dropdown {
+    right: 0;
+    min-width: 140px;
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(dir /s \"C:\\\\Users\\\\2485185\\\\Documents\\\\workspace-spring-tools-for-eclipse-5.0.1.RELEASE\\\\Front-End\\\\Cityworks\\\\src\\\\pages\" /b)",
+      "Bash(find \"C:\\\\Users\\\\2485185\\\\Documents\\\\workspace-spring-tools-for-eclipse-5.0.1.RELEASE\" -name \"*Inspection*Controller*\" -not -path \"*/.claude/*\" 2>/dev/null | head -10)"
+    ]
+  }
+}

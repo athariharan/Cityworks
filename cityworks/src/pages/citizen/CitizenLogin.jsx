@@ -2,27 +2,48 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { loginUser, registerUser, clearError } from "../../redux/slices/authSlice";
+import { loginUser, registerUser, clearError, fetchUserProfile } from "../../redux/slices/authSlice";
 import "../../styles/CitizenLogin.css";
 
+/* Civic building SVG icon */
+function CivicIcon() {
+  return (
+    <svg className="civic-icon" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+      {/* Flag pole */}
+      <rect x="15.5" y="1" width="1.5" height="6" rx="0.5" fill="currentColor" opacity="0.9"/>
+      {/* Flag */}
+      <path d="M17 1.5 L22 3.5 L17 5.5 Z" fill="currentColor"/>
+      {/* Pediment / roof triangle */}
+      <path d="M5 12 L16 6.5 L27 12 Z" fill="currentColor"/>
+      {/* Entablature bar */}
+      <rect x="4" y="12" width="24" height="2.5" rx="0.5" fill="currentColor"/>
+      {/* Four columns */}
+      <rect x="6"  y="14.5" width="3" height="11" rx="1" fill="currentColor"/>
+      <rect x="11" y="14.5" width="3" height="11" rx="1" fill="currentColor"/>
+      <rect x="18" y="14.5" width="3" height="11" rx="1" fill="currentColor"/>
+      <rect x="23" y="14.5" width="3" height="11" rx="1" fill="currentColor"/>
+      {/* Door */}
+      <rect x="13.5" y="20" width="5" height="5.5" rx="1.5" fill="currentColor" opacity="0.6"/>
+      {/* Steps */}
+      <rect x="3"  y="25.5" width="26" height="2"   rx="0.5" fill="currentColor"/>
+      <rect x="1"  y="27.5" width="30" height="1.5" rx="0.5" fill="currentColor" opacity="0.7"/>
+    </svg>
+  );
+}
+
 function CitizenLogin() {
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
+  const navigate  = useNavigate();
+  const dispatch  = useDispatch();
   const { loading, error } = useSelector((state) => state.auth);
 
   const [isRegister, setIsRegister] = useState(false);
-
-  // Shared fields
   const [email,    setEmail]    = useState("");
   const [password, setPassword] = useState("");
-
-  // Register-only fields
-  const [name,   setName]   = useState("");
-  const [gender, setGender] = useState("");
-  const [phone,  setPhone]  = useState("");
-
-  // Local success message
-  const [success, setSuccess] = useState("");
+  const [name,     setName]     = useState("");
+  const [gender,   setGender]   = useState("");
+  const [phone,    setPhone]    = useState("");
+  const [success,  setSuccess]  = useState("");
+  const [showPass, setShowPass] = useState(false);
 
   const resetForm = () => {
     setName(""); setGender(""); setPhone("");
@@ -39,169 +60,150 @@ function CitizenLogin() {
     e.preventDefault();
     setSuccess("");
     dispatch(clearError());
-
     if (isRegister) {
-      // Validate register fields
-      if (!name || !gender || !phone || !email || !password) {
-        return;
-      }
-
-      // POST /api/auth/register
-      // Sends: { name, email, phone, gender, password }
-      // gender must be uppercase to match backend: MALE / FEMALE / OTHER
+      if (!name || !gender || !phone || !email || !password) return;
       const result = await dispatch(
-        registerUser({
-          name,
-          email,
-          phone,
-          gender: gender.toUpperCase(),
-          password,
-        })
+        registerUser({ name, email, phone, gender: gender.toUpperCase(), password })
       );
-
       if (registerUser.fulfilled.match(result)) {
         setSuccess("Account created! Please sign in.");
         handleToggle("login");
       }
-
     } else {
-      // Validate login fields
       if (!email || !password) return;
       const result = await dispatch(loginUser({ email, password }));
-
       if (loginUser.fulfilled.match(result)) {
-        // role from backend is "USER" — route to citizen home
+        const userId = result.payload?.data?.userId;
+        if (userId) dispatch(fetchUserProfile(userId));
         navigate("/citizen/home");
       }
     }
   };
 
   return (
-    <div className="citizen-root">
-      <div className="citizen-card">
+    <div className="nf-root">
 
-        {/* Header */}
-        <div className="citizen-header">
-          <div className="city-icon">🏙️</div>
-          <h1>CityWorks</h1>
-          <p>Citizen Service Portal</p>
-        </div>
-
-        {/* Tabs */}
-        <div className="tab-row">
-          <button
-            className={`tab-btn ${!isRegister ? "active" : ""}`}
-            onClick={() => handleToggle("login")}
-          >
-            Sign In
-          </button>
-          <button
-            className={`tab-btn ${isRegister ? "active" : ""}`}
-            onClick={() => handleToggle("register")}
-          >
-            Create Account
-          </button>
-        </div>
-
-        {/* Body */}
-        <div className="citizen-body">
-
-          {error   && <div className="alert-custom alert-danger-custom">{error}</div>}
-          {success && <div className="alert-custom alert-success-custom"> {success}</div>}
-
-          <form onSubmit={handleSubmit} noValidate>
-
-            {/* Register-only fields */}
-            {isRegister && (
-              <>
-                <div className="field-group">
-                  <label className="form-label-custom">Full Name</label>
-                  <input
-                    type="text"
-                    className="form-input-custom"
-                    placeholder="John Doe"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    autoFocus
-                  />
-                </div>
-
-                <div className="field-group">
-                  <label className="form-label-custom">Gender</label>
-                  <div className="gender-row">
-                    {["Male", "Female", "Other"].map((option) => (
-                      <label
-                        key={option}
-                        className={`gender-chip ${gender === option ? "selected" : ""}`}
-                      >
-                        <input
-                          type="checkbox"
-                          checked={gender === option}
-                          onChange={() => setGender(option)}
-                        />
-                        {option === "Male" ? "♂ Male" : option === "Female" ? "♀ Female" : "⚬ Other"}
-                      </label>
-                    ))}
-                  </div>
-                </div>
-
-                <div className="field-group">
-                  <label className="form-label-custom">Phone Number</label>
-                  <input
-                    type="tel"
-                    className="form-input-custom"
-                    placeholder="+91 98765 43210"
-                    value={phone}
-                    onChange={(e) => setPhone(e.target.value)}
-                  />
-                </div>
-              </>
-            )}
-
-            {/* Shared fields */}
-            <div className="field-group">
-              <label className="form-label-custom">Email Address</label>
-              <input
-                type="email"
-                className="form-input-custom"
-                placeholder="you@example.com"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                autoFocus={!isRegister}
-              />
-            </div>
-
-            <div className="field-group" style={{ marginBottom: "24px" }}>
-              <label className="form-label-custom">Password</label>
-              <input
-                type="password"
-                className="form-input-custom"
-                placeholder="Enter your password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-              />
-            </div>
-
-            <button type="submit" className="submit-btn" disabled={loading}>
-              {loading ? (
-                <>
-                  <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
-                  {isRegister ? "Creating account..." : "Signing in..."}
-                </>
-              ) : (
-                isRegister ? "Create Account" : "Sign In"
-              )}
-            </button>
-
-          </form>
-
-          <div className="staff-link">
-            Are you a municipal staff member?{" "}
-            <a href="/staff">Staff Login →</a>
+      {/* ── Navbar with styled corner-bracket logo ── */}
+      <div className="nf-navbar">
+        <div className="nf-logo">
+          <div className="logo-corner-wrap">
+            <span className="lc lc-tl" /><span className="lc lc-tr" />
+            <span className="lc lc-bl" /><span className="lc lc-br" />
+            <CivicIcon />
+            <span className="logo-text">CityWorks</span>
           </div>
-
         </div>
       </div>
+
+      {/* ── Card ── */}
+      <div className="nf-card">
+
+        <div className="nf-card-brand">
+          
+          Citizen Portal
+        </div>
+
+        <h2 className="nf-title">
+          {isRegister ? "Create Account" : "Welcome Back"}
+        </h2>
+        <p className="nf-subtitle">
+          {isRegister
+            ? "Join thousands of citizens shaping a better city"
+            : "Sign in to manage your city service requests"}
+        </p>
+
+        {error   && <div className="nf-alert nf-alert-error">⚠ {error}</div>}
+        {success && <div className="nf-alert nf-alert-success">✓ {success}</div>}
+
+        <form onSubmit={handleSubmit} noValidate className="nf-form">
+
+          {isRegister && (
+            <>
+              <div className="nf-field">
+                <input type="text" className="nf-input" placeholder=" "
+                  value={name} onChange={(e) => setName(e.target.value)} autoFocus id="nf-name"/>
+                <label className="nf-label" htmlFor="nf-name">Full Name</label>
+              </div>
+
+              <div className="nf-gender-wrap">
+                <span className="nf-gender-title">Gender</span>
+                <div className="nf-gender-row">
+                  {["Male", "Female", "Other"].map((opt) => (
+                    <label key={opt} className={`nf-gender-chip ${gender === opt ? "selected" : ""}`}>
+                      <input type="checkbox" checked={gender === opt} onChange={() => setGender(opt)} />
+                      {opt === "Male" ? "♂ Male" : opt === "Female" ? "♀ Female" : "⚬ Other"}
+                    </label>
+                  ))}
+                </div>
+              </div>
+
+              <div className="nf-field">
+                <input type="tel" className="nf-input" placeholder=" "
+                  value={phone} onChange={(e) => setPhone(e.target.value)} id="nf-phone"/>
+                <label className="nf-label" htmlFor="nf-phone">Phone Number</label>
+              </div>
+            </>
+          )}
+
+          <div className="nf-field">
+            <input type="email" className="nf-input" placeholder=" "
+              value={email} onChange={(e) => setEmail(e.target.value)}
+              autoFocus={!isRegister} id="nf-email"/>
+            <label className="nf-label" htmlFor="nf-email">Email Address</label>
+          </div>
+
+          <div className="nf-field nf-field--password">
+            <input type={showPass ? "text" : "password"} className="nf-input" placeholder=" "
+              value={password} onChange={(e) => setPassword(e.target.value)} id="nf-password"/>
+            <label className="nf-label" htmlFor="nf-password">Password</label>
+            <button type="button" className="nf-eye-btn" onClick={() => setShowPass((p) => !p)} tabIndex={-1}>
+              <i className={`bi ${showPass ? "bi-eye-slash" : "bi-eye"}`} />
+            </button>
+          </div>
+
+          <button type="submit" className="nf-submit" disabled={loading}>
+            {loading ? (
+              <><span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"/>
+                {isRegister ? "Creating..." : "Signing in..."}</>
+            ) : (
+              isRegister ? "Create Account" : "Sign In"
+            )}
+          </button>
+
+          {!isRegister && (
+            <div className="nf-options-row">
+              <label className="nf-remember">
+                <input type="checkbox" /> Remember me
+              </label>
+              <a href="#" className="nf-help-link">Need help?</a>
+            </div>
+          )}
+
+        </form>
+
+        <p className="nf-toggle-text">
+          {isRegister
+            ? <>Already have an account?{" "}
+                <button className="nf-toggle-btn" onClick={() => handleToggle("login")}>Sign in</button></>
+            : <>New to CityWorks?{" "}
+                <button className="nf-toggle-btn" onClick={() => handleToggle("register")}>Create account</button></>}
+        </p>
+
+        <p className="nf-staff-text">
+          Municipal staff?{" "}
+          <a href="/staff" className="nf-staff-link">Staff Login →</a>
+        </p>
+
+        <div className="nf-card-footer">
+          <p>This page is protected by CityWorks security policy.</p>
+        </div>
+
+      </div>
+
+      <div className="nf-page-footer">
+        <p>© 2025 CityWorks Municipal Services · All rights reserved</p>
+      </div>
+
     </div>
   );
 }

@@ -2,6 +2,7 @@
 import { useState } from "react";
 import StaffNavbar  from "./StaffNavbar";
 import StaffSidebar from "./StaffSidebar";
+import ChatBot      from "../ChatBot";
 import "../../styles/StaffLayout.css";
 
 function StaffLayout({ children }) {
@@ -28,6 +29,10 @@ function StaffLayout({ children }) {
         </main>
 
       </div>
+
+      {/* Floating AI Assistant — visible on all staff pages */}
+      <ChatBot />
+
     </div>
   );
 }
