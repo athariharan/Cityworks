@@ -1,0 +1,401 @@
+/* ============================================================
+   AssetLanding.css
+   ============================================================ */
+
+.al-root {
+  padding: 22px 28px;
+  width: 100%;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+}
+
+/* ── Header ── */
+.al-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.al-breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12px;
+  color: #64748b;
+  margin-bottom: 6px;
+}
+
+.al-breadcrumb-active { color: #1d4ed8; font-weight: 600; }
+
+.al-title {
+  font-size: 24px;
+  font-weight: 800;
+  color: #0f172a;
+  letter-spacing: -0.5px;
+  margin: 0 0 4px 0;
+}
+
+.al-subtitle {
+  font-size: 13px;
+  color: #334155;
+  margin: 0;
+}
+
+.al-header-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+}
+
+.al-header-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 7px 14px;
+  background: #dbeafe;
+  color: #1e40af;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  border: 1px solid #93c5fd;
+}
+
+.al-total-pill {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px;
+  background: #fff;
+  border: 1px solid #bfdbfe;
+  border-radius: 20px;
+}
+
+.al-total-num {
+  font-size: 16px;
+  font-weight: 800;
+  color: #1e40af;
+}
+
+.al-total-label {
+  font-size: 11px;
+  color: #64748b;
+}
+
+/* ── Summary Bar ── */
+.al-summary-bar {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  background: #ffffff;
+  border: 1px solid #bfdbfe;
+  border-radius: 10px;
+  padding: 10px 18px;
+  flex-wrap: wrap;
+}
+
+.al-summary-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  cursor: default;
+}
+
+.al-summary-warn { cursor: pointer; }
+.al-summary-warn:hover { opacity: 0.8; }
+
+.al-summary-dot { width: 7px; height: 7px; border-radius: 50%; }
+.al-summary-label { color: #64748b; }
+.al-summary-value { color: #0f172a; font-weight: 600; }
+.al-summary-divider { width: 1px; height: 16px; background: #bfdbfe; }
+
+/* ── Cards Grid ── */
+.al-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+@media (max-width: 900px) {
+  .al-cards-grid { grid-template-columns: 1fr; }
+  .al-root { padding: 16px; }
+}
+
+/* ── Module Card ── */
+.al-module-card {
+  background: #ffffff;
+  border: 1px solid #e0e7e2;
+  border-radius: 14px;
+  overflow: hidden;
+  cursor: pointer;
+  position: relative;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  animation: al-fadein 0.35s ease both;
+  display: flex;
+  flex-direction: column;
+}
+
+.al-module-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 32px rgba(0,0,0,0.1);
+}
+
+.al-module-card:hover .al-card-glow { opacity: 0.06; }
+
+@keyframes al-fadein {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Card Band ── */
+.al-card-band {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 18px;
+}
+
+.al-card-icon {
+  width: 48px;
+  height: 48px;
+  background: rgba(255,255,255,0.18);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  flex-shrink: 0;
+}
+
+.al-card-band-text { flex: 1; }
+
+.al-card-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: #ffffff;
+  letter-spacing: -0.2px;
+}
+
+.al-card-subtitle {
+  font-size: 11px;
+  color: rgba(255,255,255,0.75);
+  margin-top: 2px;
+}
+
+.al-card-count-badge {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: rgba(255,255,255,0.2);
+  border-radius: 8px;
+  padding: 5px 10px;
+  flex-shrink: 0;
+}
+
+.al-card-count-num   { font-size: 18px; font-weight: 800; color: #fff; line-height: 1; }
+.al-card-count-label { font-size: 9px;  color: rgba(255,255,255,0.8); text-transform: uppercase; letter-spacing: 0.4px; margin-top: 2px; }
+
+.al-card-arrow {
+  flex-shrink: 0;
+  transition: transform 0.2s;
+}
+
+.al-module-card:hover .al-card-arrow { transform: translateX(3px); }
+
+/* ── Card Body ── */
+.al-card-body {
+  padding: 16px 18px 18px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.al-card-desc {
+  font-size: 13px;
+  color: #334155;
+  line-height: 1.6;
+  margin: 0;
+  flex: 1;
+}
+
+.al-card-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 14px;
+}
+
+/* ── Chips ── */
+.al-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 6px 12px;
+  border-radius: 7px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1.5px solid #e0e7e2;
+  background: #f8faff;
+  color: #334155;
+  transition: all 0.15s;
+  font-family: inherit;
+}
+
+.al-chip:hover { background: #eff6ff; border-color: #93c5fd; color: #1e40af; }
+.al-chip--ghost { background: transparent; border-color: #e0e7e2; }
+
+/* ── Glow overlay ── */
+.al-card-glow {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s;
+  z-index: 0;
+}
+
+/* ── Bottom Row ── */
+.al-bottom-row {
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  gap: 16px;
+}
+
+@media (max-width: 900px) { .al-bottom-row { grid-template-columns: 1fr; } }
+
+/* ── Widget shared ── */
+.al-widget-header {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.7px;
+  color: #334155;
+  margin-bottom: 14px;
+}
+
+/* ── Activity Card ── */
+.al-activity-card {
+  background: #ffffff;
+  border: 1px solid #bfdbfe;
+  border-radius: 12px;
+  padding: 16px 18px;
+}
+
+.al-empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 24px 0;
+  color: #64748b;
+  font-size: 13px;
+  text-align: center;
+}
+
+.al-activity-list { display: flex; flex-direction: column; gap: 0; }
+
+.al-activity-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 9px 0;
+  border-bottom: 1px solid #f0f7f0;
+}
+
+.al-activity-item:last-child { border-bottom: none; }
+
+.al-activity-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  flex-shrink: 0;
+}
+
+.al-activity-text { flex: 1; min-width: 0; }
+.al-activity-label { font-size: 13px; font-weight: 500; color: #0f172a; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.al-activity-sub   { font-size: 11px; color: #64748b; margin-top: 1px; }
+.al-activity-time  { font-size: 11px; color: #b0c8b4; flex-shrink: 0; }
+
+/* ── Right Column ── */
+.al-right-col {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+/* ── Tip Card ── */
+.al-tip-card {
+  background: #eff6ff;
+  border: 1px solid #93c5fd;
+  border-radius: 12px;
+  padding: 14px 16px;
+}
+
+.al-tip-text {
+  font-size: 13px;
+  color: #1e40af;
+  line-height: 1.6;
+  margin: 0;
+  font-style: italic;
+}
+
+/* ── Quick Nav ── */
+.al-quick-nav {
+  background: #ffffff;
+  border: 1px solid #bfdbfe;
+  border-radius: 12px;
+  padding: 14px 16px;
+}
+
+.al-quick-nav-title {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: #64748b;
+  margin-bottom: 10px;
+}
+
+.al-quick-nav-links { display: flex; flex-direction: column; gap: 6px; }
+
+.al-quick-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  border: 1px solid #eff6ff;
+  background: #f8faff;
+  color: #0f172a;
+  transition: all 0.15s;
+  font-family: inherit;
+  width: 100%;
+  text-align: left;
+}
+
+.al-quick-link:hover {
+  border-color: var(--accent, #3b82f6);
+  color: var(--accent, #3b82f6);
+  background: #eff6ff;
+}
+
+.al-quick-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+
+.al-quick-link svg { margin-left: auto; }
